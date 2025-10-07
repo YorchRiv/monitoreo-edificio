@@ -1,6 +1,6 @@
-@use "@coreui/coreui/scss/variables" as *;
-@use "@coreui/coreui/scss/mixins/breakpoints" as *;
-@use "@coreui/coreui/scss/mixins/color-mode" as *;
+@use "@coreui/coreui-pro/scss/variables" as *;
+@use "@coreui/coreui-pro/scss/mixins/breakpoints" as *;
+@use "@coreui/coreui-pro/scss/mixins/color-mode" as *;
 
 .example {
   &:not(:first-child) {

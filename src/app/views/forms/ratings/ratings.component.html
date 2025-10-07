@@ -1,0 +1,146 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <app-docs-components href="forms/rating/" />
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Rating Component</strong>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Embed the Rating component in your Angular application like this:
+        </p>
+        <app-docs-example href="forms/rating/">
+          <div class="bg-body border rounded p-3">
+            <c-rating [value]="3" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Rating Component</strong> <small>Readonly</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Set the Angular Rating component to read-only by adding <code>readOnly</code> property. This disables interaction, preventing users from changing the displayed rating value.
+        </p>
+        <app-docs-example href="forms/rating/#read-only">
+          <div class="bg-body border rounded p-3">
+            <c-rating readOnly [value]="3" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Rating Component</strong> <small>Disabled</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Add the <code>disabled</code> boolean property to give it a grayed out appearance, remove pointer events, and prevent focusing.
+        </p>
+        <app-docs-example href="forms/rating/#read-only">
+          <div class="bg-body border rounded p-3">
+            <c-rating disabled [value]="3" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Rating Component</strong> <small>Tooltips</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Enable descriptive text on hover by adding <code>tooltips</code> prop. This provides immediate feedback or guidance as the user interacts with the rating items.
+        </p>
+        <app-docs-example href="forms/rating/#tooltips">
+          <div class="bg-body border rounded p-3">
+            <c-rating [tooltips]="true" [value]="3" />
+          </div>
+        </app-docs-example>
+        <p class="text-body-secondary small">
+          For custom messages, provide an array of labels corresponding to each rating value to enhance the user's understanding of each rating level.
+        </p>
+        <app-docs-example href="forms/rating/#tooltips">
+          <div class="bg-body border rounded p-3">
+            <c-rating [tooltips]="['Very bad', 'Bad', 'Meh', 'Good', 'Very good']" [value]="3" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Rating Component</strong> <small>Precision</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Adjust the granularity of the Rating component by setting <code>precision</code> prop. This attribute allows for fractional ratings, such as quarter values, to provide more precise feedback.
+        </p>
+        <app-docs-example href="forms/rating/#precision">
+          <div class="bg-body border rounded p-3">
+            <c-rating [(value)]="value" precision="0.25" />
+            <div>{{ value() }}</div>
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Rating Component</strong> <small>Number of items</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Control the total number of rating items displayed by using <code>itemCount</code> property. You can create a Angular Rating component with a custom scale, be it larger for detailed assessments or smaller for simplicity. </p>
+        <app-docs-example href="forms/rating/#precision">
+          <div class="bg-body border rounded p-3">
+            <c-rating itemCount="20" [value]="7" />
+            <br>
+            <c-rating itemCount="3" [value]="1" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Rating Component</strong> <small>Custom Icons</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Customize the Angular Rating component with your choice of SVG icons by assigning new values to the <code>activeIcon</code> and <code>icon</code> properties. This allows for a unique look tailored to the design language of your site or application.
+        </p>
+        <app-docs-example href="forms/rating/#custom-icons">
+          <div class="bg-body border rounded p-3">
+            <c-rating [value]="3" icon="iconTemplate" activeIcon="activeIconTemplate">
+              <ng-template cTemplateId="iconTemplate">
+                <svg cIcon name="cilHeart" size="lg"></svg>
+              </ng-template>
+              <ng-template cTemplateId="activeIconTemplate">
+                <svg cIcon name="cilHeart" size="lg" class="text-danger"></svg>
+              </ng-template>
+            </c-rating>
+          </div>
+        </app-docs-example>
+        <p class="text-body-secondary small">
+          For a more dynamic experience, define different icons for each rating value, enhancing the visual feedback:
+        </p>
+        <app-docs-example href="forms/rating/#custom-icons">
+          <div class="bg-body border rounded p-3">
+            <c-rating [(value)]="value" [activeIcon]="activeIcons" [icon]="icons" [tooltips]="tooltips" highlightOnlySelected>
+              @for (icon of icons; track icon) {
+                <ng-template [cTemplateId]="icon">
+                  <svg cIcon [name]="icon" size="xxl"></svg>
+                </ng-template>
+              }
+              @for (icon of activeIcons; track icon; let index = $index) {
+                <ng-template [cTemplateId]="icon">
+                  <svg cIcon [name]="icons[index]" size="xxl" [ngClass]="activeClass[index]"></svg>
+                </ng-template>
+              }
+            </c-rating>
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

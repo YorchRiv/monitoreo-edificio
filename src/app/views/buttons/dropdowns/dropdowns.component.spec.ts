@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 
-import { ButtonGroupModule, ButtonModule, CardModule, CollapseModule, DropdownModule, GridModule, NavbarModule, NavModule } from '@coreui/angular';
+import { ButtonGroupModule, ButtonModule, CardModule, CollapseModule, DropdownModule, GridModule, NavbarModule, NavModule } from '@coreui/angular-pro';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
 import { DropdownsComponent } from './dropdowns.component';

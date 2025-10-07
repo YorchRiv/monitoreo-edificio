@@ -24,7 +24,7 @@ import {
   TabsComponent,
   TabsContentComponent,
   TabsListComponent
-} from '@coreui/angular';
+} from '@coreui/angular-pro';
 import { DocsComponentsComponent, DocsExampleComponent } from '@docs-components/public-api';
 
 type CardColor = {

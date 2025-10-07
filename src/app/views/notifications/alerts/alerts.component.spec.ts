@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 
-import { AlertModule, ButtonModule, CardModule, GridModule } from '@coreui/angular';
+import { AlertModule, ButtonModule, CardModule, GridModule } from '@coreui/angular-pro';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
 import { AlertsComponent } from './alerts.component';

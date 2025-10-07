@@ -11,7 +11,7 @@ import {
   TabsComponent,
   TabsContentComponent,
   TabsListComponent
-} from '@coreui/angular';
+} from '@coreui/angular-pro';
 import { IconDirective } from '@coreui/icons-angular';
 import { DocsComponentsComponent } from '@docs-components/docs-components/docs-components.component';
 

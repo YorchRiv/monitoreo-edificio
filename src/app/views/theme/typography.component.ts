@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CardBodyComponent, CardComponent, CardHeaderComponent } from '@coreui/angular';
+import { CardBodyComponent, CardComponent, CardHeaderComponent } from '@coreui/angular-pro';
 
 @Component({
   templateUrl: 'typography.component.html',

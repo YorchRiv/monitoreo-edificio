@@ -1,3 +1,4 @@
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -25,7 +26,7 @@ import {
   NavItemComponent,
   NavLinkDirective,
   RowComponent
-} from '@coreui/angular';
+} from '@coreui/angular-pro';
 import { DocsComponentsComponent, DocsExampleComponent } from '@docs-components/public-api';
 
 @Component({
@@ -58,7 +59,8 @@ import { DocsComponentsComponent, DocsExampleComponent } from '@docs-components/
     FormDirective,
     FormControlDirective,
     ButtonGroupComponent,
-    DocsComponentsComponent
+    DocsComponentsComponent,
+    CdkTrapFocus
   ]
 })
 export class DropdownsComponent {

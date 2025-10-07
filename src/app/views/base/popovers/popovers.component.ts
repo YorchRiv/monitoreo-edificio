@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ButtonDirective, CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, PopoverDirective, RowComponent } from '@coreui/angular';
+import { ButtonDirective, CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, PopoverDirective, RowComponent } from '@coreui/angular-pro';
 import { DocsComponentsComponent, DocsExampleComponent } from '@docs-components/public-api';
 
 @Component({

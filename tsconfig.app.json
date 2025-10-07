@@ -8,9 +8,9 @@
       "@angular/localize"
     ],
     "paths": {
-      "@docs-components/*": [
-        "./src/components/*"
-      ]
+//      "@angular/*": [ "./node_modules/@angular/*" ],
+//      "@coreui/*": ["./node_modules/@coreui/*"],
+      "@docs-components/*": ["./src/components/*"]
     }
   },
   "files": [

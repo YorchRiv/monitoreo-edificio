@@ -9,7 +9,7 @@ import {
   RowComponent,
   TextColorDirective,
   TooltipDirective
-} from '@coreui/angular';
+} from '@coreui/angular-pro';
 import { DocsComponentsComponent, DocsExampleComponent } from '@docs-components/public-api';
 
 @Component({

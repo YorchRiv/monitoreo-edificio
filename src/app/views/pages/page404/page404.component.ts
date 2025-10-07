@@ -8,7 +8,7 @@ import {
   InputGroupComponent,
   InputGroupTextDirective,
   RowComponent
-} from '@coreui/angular';
+} from '@coreui/angular-pro';
 
 @Component({
   selector: 'app-page404',

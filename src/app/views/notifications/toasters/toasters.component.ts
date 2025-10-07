@@ -27,7 +27,7 @@ import {
   ToasterComponent,
   ToasterPlacement,
   ToastHeaderComponent
-} from '@coreui/angular';
+} from '@coreui/angular-pro';
 import { DocsComponentsComponent } from '@docs-components/docs-components/docs-components.component';
 import { AppToastComponent } from './toast-simple/toast.component';
 

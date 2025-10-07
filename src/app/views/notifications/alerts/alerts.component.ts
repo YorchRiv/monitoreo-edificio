@@ -12,7 +12,7 @@ import {
   ColComponent,
   RowComponent,
   TemplateIdDirective
-} from '@coreui/angular';
+} from '@coreui/angular-pro';
 import { IconDirective } from '@coreui/icons-angular';
 import { DocsComponentsComponent, DocsExampleComponent } from '@docs-components/public-api';
 

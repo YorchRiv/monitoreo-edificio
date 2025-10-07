@@ -1,7 +1,7 @@
 import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { getStyle } from '@coreui/utils';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
-import { ColComponent, RowComponent, WidgetStatEComponent } from '@coreui/angular';
+import { ColComponent, RowComponent, WidgetStatEComponent } from '@coreui/angular-pro';
 
 @Component({
   selector: 'app-widgets-e',

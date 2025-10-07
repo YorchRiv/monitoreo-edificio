@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { CardModule, GridModule, TableModule, UtilitiesModule } from '@coreui/angular';
+import { CardModule, GridModule, TableModule, UtilitiesModule } from '@coreui/angular-pro';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
 import { TablesComponent } from './tables.component';

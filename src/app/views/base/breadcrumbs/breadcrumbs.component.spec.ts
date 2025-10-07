@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { BreadcrumbModule, CardModule, GridModule } from '@coreui/angular';
+import { BreadcrumbModule, CardModule, GridModule } from '@coreui/angular-pro';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
 import { BreadcrumbsComponent } from './breadcrumbs.component';

@@ -1,20 +1,14 @@
-import { INavData } from '@coreui/angular';
+import { INavData } from '@coreui/angular-pro';
 
 export const navItems: INavData[] = [
   {
     name: 'Dashboard',
     url: '/dashboard',
     iconComponent: { name: 'cil-speedometer' },
-  },
-  {
-    name: 'Historial de Consumo',
-    url: '/dashboard',
-    iconComponent: { name: 'cil-notes' }
-  },
-  {
-    name: 'Proyeccion de Consumo',
-    url: '/dashboard',
-    iconComponent: { name: 'cil-cursor' }
+    badge: {
+      color: 'info',
+      text: 'NEW'
+    }
   },
   {
     title: true,
@@ -52,13 +46,12 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Calendar',
-        url: 'https://coreui.io/angular/docs/components/calendar/',
+        url: '/base/calendar',
         icon: 'nav-icon-bullet',
         badge: {
-          color: 'danger',
+          color: 'danger-gradient',
           text: 'PRO'
-        },
-        attributes: { target: '_blank' }
+        }
       },
       {
         name: 'Cards',
@@ -94,26 +87,6 @@ export const navItems: INavData[] = [
         name: 'Placeholder',
         url: '/base/placeholder',
         icon: 'nav-icon-bullet'
-      },
-      {
-        name: 'Smart Table',
-        url: 'https://coreui.io/angular/docs/components/smart-table/',
-        icon: 'nav-icon-bullet',
-        badge: {
-          color: 'danger',
-          text: 'PRO'
-        },
-        attributes: { target: '_blank' }
-      },
-      {
-        name: 'Smart Pagination',
-        url: 'https://coreui.io/angular/docs/components/smart-pagination/',
-        icon: 'nav-icon-bullet',
-        badge: {
-          color: 'danger',
-          text: 'PRO'
-        },
-        attributes: { target: '_blank' }
       },
       {
         name: 'Popovers',
@@ -169,13 +142,12 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Loading Button',
-        url: 'https://coreui.io/angular/docs/components/loading-button/',
+        url: '/buttons/loading-buttons',
         icon: 'nav-icon-bullet',
         badge: {
-          color: 'danger',
+          color: 'danger-gradient',
           text: 'PRO'
-        },
-        attributes: { target: '_blank' }
+        }
       }
     ]
   },
@@ -186,13 +158,12 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Autocomplete',
-        url: 'https://coreui.io/angular/docs/forms/autocomplete/',
+        url: '/forms/autocomplete',
         icon: 'nav-icon-bullet',
         badge: {
-          color: 'danger',
+          color: 'danger-gradient',
           text: 'PRO'
-        },
-        attributes: { target: '_blank' }
+        }
       },
       {
         name: 'Form Control',
@@ -206,23 +177,21 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Date Picker',
-        url: 'https://coreui.io/angular/docs/forms/date-picker/',
+        url: '/forms/date-picker',
         icon: 'nav-icon-bullet',
         badge: {
-          color: 'danger',
+          color: 'danger-gradient',
           text: 'PRO'
-        },
-        attributes: { target: '_blank' }
+        }
       },
       {
         name: 'Date Range Picker',
-        url: 'https://coreui.io/angular/docs/forms/date-range-picker/',
+        url: '/forms/date-range-picker',
         icon: 'nav-icon-bullet',
         badge: {
-          color: 'danger',
+          color: 'danger-gradient',
           text: 'PRO'
-        },
-        attributes: { target: '_blank' }
+        }
       },
       {
         name: 'Floating Labels',
@@ -236,23 +205,21 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Multi Select',
-        url: 'https://coreui.io/angular/docs/forms/multi-select/',
+        url: '/forms/multi-select',
         icon: 'nav-icon-bullet',
         badge: {
-          color: 'danger',
+          color: 'danger-gradient',
           text: 'PRO'
-        },
-        attributes: { target: '_blank' }
+        }
       },
       {
         name: 'Password Input',
-        url: 'https://coreui.io/angular/docs/forms/password-input/',
+        url: '/forms/password-input',
         icon: 'nav-icon-bullet',
         badge: {
-          color: 'danger',
+          color: 'danger-gradient',
           text: 'PRO'
-        },
-        attributes: { target: '_blank' }
+        }
       },
       {
         name: 'Range',
@@ -261,23 +228,21 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Range Slider',
-        url: 'https://coreui.io/angular/docs/forms/range-slider/',
+        url: '/forms/range-slider',
         icon: 'nav-icon-bullet',
         badge: {
-          color: 'danger',
+          color: 'danger-gradient',
           text: 'PRO'
-        },
-        attributes: { target: '_blank' }
+        }
       },
       {
         name: 'Rating',
-        url: 'https://coreui.io/angular/docs/forms/rating/',
+        url: '/forms/rating',
         icon: 'nav-icon-bullet',
         badge: {
-          color: 'danger',
+          color: 'danger-gradient',
           text: 'PRO'
-        },
-        attributes: { target: '_blank' }
+        }
       },
       {
         name: 'Select',
@@ -286,23 +251,21 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Stepper',
-        url: 'https://coreui.io/angular/docs/forms/stepper/',
+        url: '/forms/stepper',
         icon: 'nav-icon-bullet',
         badge: {
-          color: 'danger',
+          color: 'danger-gradient',
           text: 'PRO'
-        },
-        attributes: { target: '_blank' }
+        }
       },
       {
         name: 'Time Picker',
-        url: 'https://coreui.io/angular/docs/forms/time-picker/',
+        url: '/forms/time-picker',
         icon: 'nav-icon-bullet',
         badge: {
-          color: 'danger',
+          color: 'danger-gradient',
           text: 'PRO'
-        },
-        attributes: { target: '_blank' }
+        }
       },
       {
         name: 'Layout',
@@ -315,11 +278,6 @@ export const navItems: INavData[] = [
         icon: 'nav-icon-bullet'
       }
     ]
-  },
-  {
-    name: 'Charts',
-    iconComponent: { name: 'cil-chart-pie' },
-    url: '/charts'
   },
   {
     name: 'Icons',
@@ -384,6 +342,34 @@ export const navItems: INavData[] = [
     }
   },
   {
+    name: 'Smart Table',
+    url: '/smart-table',
+    iconComponent: { name: 'cil-grid' },
+    badge: {
+      color: 'danger-gradient',
+      text: 'PRO'
+    }
+  },
+  {
+    title: true,
+    name: 'Plugins'
+  },
+  {
+    name: 'Calendar',
+    iconComponent: { name: 'cil-calendar' },
+    url: '/plugins/calendar'
+  },
+  {
+    name: 'Charts',
+    iconComponent: { name: 'cil-chart' },
+    url: '/plugins/charts'
+  },
+  {
+    name: 'Google Maps',
+    iconComponent: { name: 'cil-map' },
+    url: '/plugins/google-maps'
+  },
+  {
     title: true,
     name: 'Extras'
   },
@@ -411,6 +397,63 @@ export const navItems: INavData[] = [
         name: 'Error 500',
         url: '/500',
         icon: 'nav-icon-bullet'
+      }
+    ]
+  },
+  {
+    name: 'Apps',
+    url: '/apps',
+    iconComponent: { name: 'cil-layers' },
+    children: [
+      {
+        name: 'Invoicing',
+        iconComponent: { name: 'cil-spreadsheet' },
+        url: '/apps/invoicing',
+        children: [
+          {
+            name: 'Invoice',
+            url: '/apps/invoicing/invoice',
+            icon: 'nav-icon-bullet',
+            badge: {
+              color: 'danger-gradient',
+              text: 'PRO'
+            }
+          }
+        ]
+      },
+      {
+        name: 'Email',
+        url: '/apps/email',
+        iconComponent: { name: 'cil-envelope-open' },
+        children: [
+          {
+            name: 'Inbox',
+            url: '/apps/email/inbox',
+            icon: 'nav-icon-bullet',
+            badge: {
+              color: 'danger-gradient',
+              text: 'PRO'
+            }
+          },
+          {
+            name: 'Message',
+            url: '/apps/email/message',
+            icon: 'nav-icon-bullet',
+            badge: {
+              color: 'danger-gradient',
+              text: 'PRO'
+            }
+          },
+          {
+            name: 'Compose',
+            url: '/apps/email/compose',
+            icon: 'nav-icon-bullet',
+            badge: {
+              color: 'danger-gradient',
+              text: 'PRO'
+            }
+          }
+        ]
       }
     ]
   },

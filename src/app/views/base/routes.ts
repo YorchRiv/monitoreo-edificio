@@ -34,6 +34,13 @@ export const routes: Routes = [
         }
       },
       {
+        path: 'calendar',
+        loadComponent: () => import('./calendar/calendars.component').then(m => m.CalendarsComponent),
+        data: {
+          title: 'Calendar'
+        }
+      },
+      {
         path: 'carousel',
         loadComponent: () => import('./carousels/carousels.component').then(m => m.CarouselsComponent),
         data: {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ChartData } from 'chart.js';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
-import { CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent } from '@coreui/angular';
+import { CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent } from '@coreui/angular-pro';
 import { DocsCalloutComponent } from '@docs-components/public-api';
 
 @Component({

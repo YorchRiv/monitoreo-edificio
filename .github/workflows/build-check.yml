@@ -9,8 +9,8 @@ on:
       - main
       - v5.*
   schedule:
-    # build runs every weekday at 4:15AM UTC
-    - cron: '15 4 * * *'
+    # build runs every monday at 4:15AM UTC
+    - cron: '15 4 * * 1'
 
 env:
   FORCE_COLOR: 2

@@ -1,0 +1,101 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <app-docs-components href="forms/range-slider/" />
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Range Slider</strong>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          The Angular Range Slider component allows users to select a value or range of values within a predefined range. Unlike the standard
+          <code>&lt;input type="range"&gt;</code>, the Range Slider offers enhanced customization options, including multiple handles, labels, tooltips, and vertical orientation. It ensures consistent styling across browsers and provides a rich set of features for advanced use cases.
+        </p>
+        <app-docs-example href="forms/range-slider/">
+          <div class="bg-body border rounded p-3">
+            <c-range-slider [labels]="['Low', 'Medium', 'High']" [value]="[25, 75]" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Range Slider</strong> <small>Multiple handles</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Enable multiple handles to allow the selection of a range or/and multiple values.
+        </p>
+        <app-docs-example href="forms/range-slider/#multiple-handles">
+          <div class="bg-body border rounded">
+            <c-range-slider [value]="[20, 40]" />
+            <c-range-slider [value]="[20, 40, 60]" />
+            <c-range-slider [value]="[20, 40, 60, 80]" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Range Slider</strong> <small>Vertical</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Rotate the slider to a vertical orientation.
+        </p>
+        <app-docs-example href="forms/range-slider/#vertical-range-slider">
+          <div class="d-flex bg-body border rounded">
+            <c-range-slider [value]="20" vertical />
+            <c-range-slider [value]="[20, 80]" vertical />
+            <c-range-slider [value]="[20, 80, 100]" vertical />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Range Slider</strong> <small>Min and Max</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Angular Range Slider component has implicit values for <code>min</code> and <code>max</code> - <code>0</code> and <code>100</code>, respectively. You may specify new values for those using the <code>min</code> and <code>max</code> attributes.
+        </p>
+        <app-docs-example href="forms/range-slider/#min-and-max">
+          <div class="bg-body border rounded">
+            <c-range-slider [value]="50" max="150" min="-50" />
+            <c-range-slider [value]="[50, 75]" max="150" min="-50" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Range Slider</strong> <small>Distance</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Sets the minimum distance between multiple slider handles by setting <code>distance</code> and ensures that the handles do not overlap or get too close.
+        </p>
+        <app-docs-example href="forms/range-slider/#distance">
+          <div class="bg-body border rounded">
+            <c-range-slider [value]="[50, 75]" distance="10" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Range Slider</strong> <small>Labels</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Add labels to specific points on the slider for better context. If you provide an array of strings, as in the example below, then labels will be spaced at equal distances from the beginning to the end of the slider.
+        </p>
+        <app-docs-example href="forms/range-slider/#labels">
+          <div class="bg-body border rounded p-3">
+            <c-range-slider [labels]="['Start', 'Middle', 'End']" [value]="[30, 70]" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

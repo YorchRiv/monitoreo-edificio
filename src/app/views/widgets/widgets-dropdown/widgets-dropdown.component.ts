@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, viewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, inject, Input, OnInit, viewChild } from '@angular/core';
 import { getStyle } from '@coreui/utils';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { RouterLink } from '@angular/router';
@@ -14,7 +14,7 @@ import {
   RowComponent,
   TemplateIdDirective,
   WidgetStatAComponent
-} from '@coreui/angular';
+} from '@coreui/angular-pro';
 
 @Component({
   selector: 'app-widgets-dropdown',
@@ -27,40 +27,40 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
   data: any[] = [];
   options: any[] = [];
   labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-    'January',
-    'February',
-    'March',
-    'April'
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril'
   ];
   datasets = [
     [{
-      label: 'My First dataset',
+      label: 'Voltaje (V)',
       backgroundColor: 'transparent',
       borderColor: 'rgba(255,255,255,.55)',
       pointBackgroundColor: getStyle('--cui-primary'),
       pointHoverBorderColor: getStyle('--cui-primary'),
-      data: [65, 59, 84, 84, 51, 55, 40]
+      data: [65, 59, 80, 84, 51, 55, 40]
     }], [{
-      label: 'My Second dataset',
+      label: 'Amperaje (A)',
       backgroundColor: 'transparent',
       borderColor: 'rgba(255,255,255,.55)',
       pointBackgroundColor: getStyle('--cui-info'),
       pointHoverBorderColor: getStyle('--cui-info'),
       data: [1, 18, 9, 17, 34, 22, 11]
     }], [{
-      label: 'My Third dataset',
+      label: 'Consumo (kWh)',
       backgroundColor: 'rgba(255,255,255,.2)',
       borderColor: 'rgba(255,255,255,.55)',
       pointBackgroundColor: getStyle('--cui-warning'),
@@ -68,7 +68,7 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
       data: [78, 81, 80, 45, 34, 12, 40],
       fill: true
     }], [{
-      label: 'My Fourth dataset',
+      label: 'Costo (GTQ)',
       backgroundColor: 'rgba(255,255,255,.2)',
       borderColor: 'rgba(255,255,255,.55)',
       data: [78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98, 34, 84, 67, 82],

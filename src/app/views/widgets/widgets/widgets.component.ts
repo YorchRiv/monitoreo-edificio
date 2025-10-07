@@ -16,7 +16,7 @@ import {
   WidgetStatBComponent,
   WidgetStatCComponent,
   WidgetStatFComponent
-} from '@coreui/angular';
+} from '@coreui/angular-pro';
 
 @Component({
   selector: 'app-widgets',

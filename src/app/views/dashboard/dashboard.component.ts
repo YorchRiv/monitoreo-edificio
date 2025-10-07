@@ -16,7 +16,7 @@ import {
   ProgressComponent,
   RowComponent,
   TableDirective
-} from '@coreui/angular';
+} from '@coreui/angular-pro';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { IconDirective } from '@coreui/icons-angular';
 

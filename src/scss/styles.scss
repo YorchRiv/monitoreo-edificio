@@ -1,12 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
 // Import styles with default layout.
-@use "@coreui/coreui/scss/coreui" as * with (
+@use "@coreui/coreui-pro/scss/coreui" as * with (
+  // If you want to override variables do it here
   $enable-deprecation-messages: false
 );
 
 // Import Chart.js custom tooltips styles
-@use "@coreui/chartjs/scss/coreui-chartjs";
+@use "@coreui/chartjs/scss/coreui-chartjs" as *;
 
 // Custom styles for this theme
 @use "theme";

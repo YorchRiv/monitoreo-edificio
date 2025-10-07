@@ -9,7 +9,7 @@ import {
   withViewTransitions
 } from '@angular/router';
 
-import { DropdownModule, SidebarModule } from '@coreui/angular';
+import { DropdownModule, SidebarModule } from '@coreui/angular-pro';
 import { IconSetService } from '@coreui/icons-angular';
 import { routes } from './app.routes';
 

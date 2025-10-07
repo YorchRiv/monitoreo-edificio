@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { ButtonModule, CardModule, GridModule, SpinnerModule } from '@coreui/angular';
+import { ButtonModule, CardModule, GridModule, SpinnerModule } from '@coreui/angular-pro';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
 import { SpinnersComponent } from './spinners.component';

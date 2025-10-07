@@ -1,6 +1,6 @@
 import { Component, forwardRef, input } from '@angular/core';
 
-import { ProgressComponent, ToastBodyComponent, ToastCloseDirective, ToastComponent, ToastHeaderComponent } from '@coreui/angular';
+import { ProgressComponent, ToastBodyComponent, ToastCloseDirective, ToastComponent, ToastHeaderComponent } from '@coreui/angular-pro';
 
 @Component({
   selector: 'app-toast-simple',

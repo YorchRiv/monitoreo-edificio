@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, inject
 import packageJson from '../../../package.json';
 import { IconDirective } from '@coreui/icons-angular';
 import { RouterLink } from '@angular/router';
-import { NavComponent, NavItemComponent, NavLinkDirective } from '@coreui/angular';
+import { NavComponent, NavItemComponent, NavLinkDirective } from '@coreui/angular-pro';
 
 @Component({
     selector: 'app-docs-example',

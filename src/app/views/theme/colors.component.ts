@@ -2,7 +2,7 @@ import { AfterViewInit, Component, computed, DOCUMENT, forwardRef, inject, input
 import { NgClass } from '@angular/common';
 
 import { getStyle, rgbToHex } from '@coreui/utils';
-import { CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent } from '@coreui/angular';
+import { CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent } from '@coreui/angular-pro';
 
 @Component({
   templateUrl: 'colors.component.html',

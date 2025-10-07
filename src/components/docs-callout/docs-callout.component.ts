@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-import { CalloutComponent } from '@coreui/angular';
+import { CalloutComponent } from '@coreui/angular-pro';
 import packageJson from '../../../package.json';
 
 @Component({

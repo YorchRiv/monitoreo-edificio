@@ -8,7 +8,7 @@ import {
   ProgressComponent,
   ProgressStackedComponent,
   RowComponent
-} from '@coreui/angular';
+} from '@coreui/angular-pro';
 import { DocsComponentsComponent, DocsExampleComponent } from '@docs-components/public-api';
 
 @Component({

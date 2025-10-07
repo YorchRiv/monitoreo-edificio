@@ -1,0 +1,195 @@
+<c-row>
+  <c-col xs="12">
+    <app-docs-components href="forms/autocomplete" title="Autocomplete" />
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>CoreUI Angular Autocomplete</strong>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          A straightforward demonstration of how to implement a basic Angular Autocomplete input field, highlighting essential attributes and configurations.
+        </p>
+        <app-docs-example href="forms/autocomplete/#basic-example">
+          <c-row>
+            <label cLabel for="autocomplete1">Programming Languages</label>
+            <input
+              [options]="programmingLanguages"
+              cAutocomplete
+              cleaner
+              highlightOptionsOnSearch
+              id="autocomplete1"
+              indicator
+              placeholder="Type to search...."
+              searchNoResultsLabel="No results found"
+              showHints
+              value="TypeScript"
+            />
+          </c-row>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>CoreUI Angular Autocomplete</strong> with hints
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Enable hints by adding <code>showHints</code> to show completion suggestions as you type.
+        </p>
+        <app-docs-example href="forms/autocomplete/#show-hints">
+          <c-row>
+            <label cLabel for="autocomplete2">Frameworks</label>
+            <input
+              [options]="frameworks"
+              cAutocomplete
+              id="autocomplete2"
+              placeholder="Search frameworks..."
+              showHints
+            />
+          </c-row>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>CoreUI Angular Autocomplete</strong> with cleaner button
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Add a clear button by setting <code>cleaner</code> prop
+        </p>
+        <app-docs-example href="forms/autocomplete/#cleaner-functionality">
+          <c-row>
+            <label cLabel for="autocomplete3">Countries</label>
+            <input
+              [options]="countries"
+              cAutocomplete
+              cleaner
+              id="autocomplete3"
+              placeholder="Select country..."
+            />
+          </c-row>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>CoreUI Angular Autocomplete</strong> highlight matching text
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Enable text highlighting in dropdown options with <code>highlightOptionsOnSearch</code> prop
+        </p>
+        <app-docs-example href="forms/autocomplete/#highlight-matching-text">
+          <c-row>
+            <label cLabel for="autocomplete4">Cities</label>
+            <input
+              [options]="cities"
+              cAutocomplete
+              highlightOptionsOnSearch
+              id="autocomplete4"
+              placeholder="Find city..."
+            />
+          </c-row>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>CoreUI Angular Autocomplete</strong> multiple configurations
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Combine multiple features for enhanced functionality
+        </p>
+        <app-docs-example href="forms/autocomplete/">
+          <form>
+            <c-row>
+              <c-col>
+                <label cLabel for="autocomplete6">Technologies <small>(with hints & cleaner)</small></label>
+                <input
+                  [options]="technologies"
+                  cAutocomplete
+                  cleaner
+                  highlightOptionsOnSearch
+                  id="autocomplete6"
+                  placeholder="Choose technology..."
+                  showHints
+                />
+              </c-col>
+              <c-col>
+                <label cLabel for="autocomplete7">Colors</label>
+                <input
+                  [options]="colors"
+                  cAutocomplete
+                  cleaner
+                  id="autocomplete7"
+                  placeholder="Pick a color..."
+                />
+              </c-col>
+            </c-row>
+          </form>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>CoreUI Angular Autocomplete</strong> validation states
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Apply validation states using Bootstrap's validation classes.
+        </p>
+        <app-docs-example href="forms/autocomplete/#validation-states">
+          <form>
+            <c-row>
+              <c-col>
+                <label cLabel for="autocomplete-valid">Valid input</label>
+                <input
+                  [options]="basicOptions"
+                  [valid]="true"
+                  cAutocomplete
+                  id="autocomplete-valid"
+                  placeholder="Valid state..."
+                />
+                <c-form-feedback [valid]="true">Valid choice!</c-form-feedback>
+              </c-col>
+              <c-col>
+                <label cLabel for="autocomplete-invalid">Valid input</label>
+                <input
+                  [options]="basicOptions"
+                  [valid]="false"
+                  cAutocomplete
+                  id="autocomplete-invalid"
+                  placeholder="Invalid state..."
+                />
+                <c-form-feedback [valid]="false">Please select a valid option.</c-form-feedback>
+              </c-col>
+              <c-col>
+                <label cLabel for="autocomplete-disabled">Disabled input</label>
+                <input
+                  [options]="basicOptions"
+                  cAutocomplete
+                  disabled
+                  id="autocomplete-disabled"
+                  placeholder="Disabled state..."
+                />
+                <span cFormText>Disabled input.</span>
+              </c-col>
+            </c-row>
+          </form>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

@@ -1,0 +1,99 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <app-docs-components href="components/calendar" title="Calendar" />
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Calendar</strong> <small>Days</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Select specific days using the Angular Calendar component. The example below shows basic
+          usage.
+        </p>
+        <app-docs-example href="components/calendar/#days">
+          <div class="d-flex justify-content-center">
+            <c-calendar class="bg-body border rounded" locale="en-US" [startDate]="startDate()" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Calendar</strong> <small>Weeks</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Set the <code>selectionType</code> to <code>week</code> to enable selection of entire
+          week. You can also add <code>showWeekNumber</code> to show week numbers.
+        </p>
+        <app-docs-example href="components/calendar/#weeks">
+          <div class="d-flex justify-content-center">
+            <c-calendar class="bg-body border rounded" selectionType="week" showWeekNumber startDate="2025W42" calendarDate="2025W42" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Calendar</strong> <small>Months</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Set the <code>selectionType</code> property to <code>month</code> to enable selection
+          of entire months.
+        </p>
+        <app-docs-example href="components/calendar/#months">
+          <div class="d-flex justify-content-center">
+            <c-calendar class="bg-body border rounded" selectionType="month" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Calendar</strong> <small>Years</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Set the <code>selectionType</code> property to <code>year</code> to enable selection
+          of years.
+        </p>
+        <app-docs-example href="components/calendar/#years">
+          <div class="d-flex justify-content-center">
+            <c-calendar class="bg-body border rounded" selectionType="year" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Calendar</strong> <small> Multiple calendar panels</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Display multiple calendar panels side by side by setting the <code>calendars</code> property. This can be useful for selecting ranges or comparing dates across different months.
+        </p>
+        <app-docs-example href="components/calendar#multiple-calendar-panels">
+          <div class="d-flex justify-content-center">
+            <c-calendar class="bg-body border rounded" calendars="2" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Angular Calendar</strong> <small> Range selection</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-body-secondary small">
+          Enable <code>range</code> selection to allow users to pick a start and end date. This example shows how to configure the Angular Calendar component to handle date ranges.
+        </p>
+        <app-docs-example href="components/calendar/#range-selection">
+          <div class="d-flex justify-content-center">
+            <c-calendar class="bg-body border rounded" calendars="2" range [startDate]="startDate()" [endDate]="endDate()" />
+          </div>
+        </app-docs-example>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

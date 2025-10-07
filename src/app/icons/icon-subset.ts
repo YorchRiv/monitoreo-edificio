@@ -49,6 +49,7 @@ import {
   cilExternalLink,
   cilFile,
   cilGrid,
+  cilHeart,
   cilHome,
   cilInbox,
   cilIndentDecrease,
@@ -65,7 +66,12 @@ import {
   cilMap,
   cilMediaPlay,
   cilMediaRecord,
+  cilMeh,
   cilMenu,
+  cilMoodBad,
+  cilMoodGood,
+  cilMoodVeryBad,
+  cilMoodVeryGood,
   cilMoon,
   cilNotes,
   cilOptions,
@@ -198,7 +204,13 @@ export const iconSubset = {
   cilUserFollow,
   cilUserUnfollow,
   logo,
-  signet
+  signet,
+  cilHeart,
+  cilMoodVeryBad,
+  cilMoodBad,
+  cilMeh,
+  cilMoodGood,
+  cilMoodVeryGood
 };
 
 export enum IconSubset {
@@ -299,6 +311,12 @@ export enum IconSubset {
   cilUserFollow = 'cilUserFollow',
   cilUserUnfollow = 'cilUserUnfollow',
   logo = 'logo',
-  signet = 'signet'
+  signet = 'signet',
+  cilHeart = 'cilHeart',
+  cilMoodVeryBad = 'cilMoodVeryBad',
+  cilMoodBad = 'cilMoodBad',
+  cilMeh = 'cilMeh',
+  cilMoodGood = 'cilMoodGood',
+  cilMoodVeryGood = 'cilMoodVeryGood'
 }
 

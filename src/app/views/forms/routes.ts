@@ -27,6 +27,13 @@ export const routes: Routes = [
         }
       },
       {
+        path: 'multi-select',
+        loadComponent: () => import('./multi-select/multi-select.component').then(m => m.MultiSelectComponent),
+        data: {
+          title: 'Multi Select'
+        }
+      },
+      {
         path: 'checks-radios',
         loadComponent: () => import('./checks-radios/checks-radios.component').then(m => m.ChecksRadiosComponent),
         data: {
@@ -62,12 +69,68 @@ export const routes: Routes = [
         }
       },
       {
+        path: 'date-picker',
+        loadComponent: () => import('./date-picker/date-picker.component').then(m => m.DatePickerComponent),
+        data: {
+          title: 'Date Picker'
+        }
+      },
+      {
+        path: 'date-range-picker',
+        loadComponent: () => import('./date-range-picker/date-range-picker.component').then(m => m.DateRangePickerComponent),
+        data: {
+          title: 'Date Range Picker'
+        }
+      },
+      {
+        path: 'time-picker',
+        loadComponent: () => import('./time-picker/time-picker.component').then(m => m.TimePickerComponent),
+        data: {
+          title: 'Time Picker'
+        }
+      },
+      {
         path: 'validation',
         loadComponent: () => import('./validation/validation.component').then(m => m.ValidationComponent),
         data: {
           title: 'Validation'
         }
-      }
+      },
+      {
+        path: 'password-input',
+        loadComponent: () => import('./password-inputs/password-inputs.component').then(m => m.PasswordInputsComponent),
+        data: {
+          title: 'Password Input'
+        }
+      },
+      {
+        path: 'range-slider',
+        loadComponent: () => import('./range-sliders/range-sliders.component').then(m => m.RangeSlidersComponent),
+        data: {
+          title: 'Range Slider'
+        }
+      },
+      {
+        path: 'rating',
+        loadComponent: () => import('./ratings/ratings.component').then(m => m.RatingsComponent),
+        data: {
+          title: 'Rating'
+        }
+      },
+      {
+        path: 'stepper',
+        loadComponent: () => import('./steppers/steppers.component').then(m => m.SteppersComponent),
+        data: {
+          title: 'Steppers'
+        }
+      },
+      {
+        path: 'autocomplete',
+        loadComponent: () => import('./autocomplete/autocompletes.component').then(m => m.AutocompletesComponent),
+        data: {
+          title: 'Autocomplete'
+        }
+      },
     ]
   }
 ];
