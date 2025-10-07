@@ -4,7 +4,7 @@
     <c-row>
       <c-col sm="5">
         <h4 class="card-title mb-0" id="traffic">Consumo Electrico</h4>
-        <div class="small text-body-secondary">January - December 2023</div>
+        <div class="small text-body-secondary">Enero - Diciembre 2023</div>
       </c-col>
       <c-col class="d-none d-md-block" sm="7">
         <button cButton class="float-end" color="primary" aria-label="Download">
@@ -16,7 +16,7 @@
               class="btn-check"
               formControlName="trafficRadio"
               type="radio"
-              value="Day"
+              value="Days"
               id="dayRadio"
             />
             <label
@@ -27,7 +27,7 @@
               variant="outline"
               for="dayRadio"
             >
-              Day
+              Dia
             </label>
             <input
               class="btn-check"
@@ -44,7 +44,7 @@
               variant="outline"
               for="radioMonth"
             >
-              Month
+              Mes
             </label>
             <input
               class="btn-check"
@@ -61,7 +61,7 @@
               variant="outline"
               for="radioYear"
             >
-              Year
+              Año
             </label>
           </c-button-group>
         </form>
@@ -81,35 +81,33 @@
   <c-card-footer>
     <c-row class="text-center mb-2" [xl]="5" [lg]="4" [sm]="2" [xs]="1" [gutter]="4">
       <c-col>
-        <div class="text-body-secondary">Visits</div>
-        <strong>29.703 Users (40%)</strong>
-        <c-progress class="mt-2" thin color="success" value="40" aria-label="User visits" />
+        <div class="text-body-secondary">Nivel 1</div>
+        <strong>345 KWH</strong>
+        <c-progress class="mt-2" thin color="success" value="50" aria-label="User visits" />
       </c-col>
       <c-col>
-        <div class="text-body-secondary">Unique</div>
-        <div class="fw-semibold text-truncate">24.093 Users (20%)</div>
+        <div class="text-body-secondary">Nivel 2</div>
+        <div class="fw-semibold text-truncate">485 KWH</div>
         <c-progress class="mt-2" thin color="info" value="20" aria-label="Unique users" />
       </c-col>
       <c-col>
-        <div class="text-body-secondary">Page views</div>
-        <div class="fw-semibold text-truncate">78.706 Views (60%)</div>
+        <div class="text-body-secondary">Nivel 3</div>
+        <div class="fw-semibold text-truncate">78.706 KWH</div>
         <c-progress class="mt-2" thin color="warning" value="60" aria-label="Page views" />
       </c-col>
       <c-col>
-        <div class="text-body-secondary">New Users</div>
-        <div class="fw-semibold text-truncate">22.123 Users (80%)</div>
+        <div class="text-body-secondary">Nivel 4</div>
+        <div class="fw-semibold text-truncate">22.123 KWH</div>
         <c-progress class="mt-2" thin color="danger" value="80" aria-label="New users" />
       </c-col>
       <c-col class="d-none d-xl-block">
-        <div class="text-body-secondary">Bounce Rate</div>
-        <div class="fw-semibold text-truncate">Average Rate (40.15%)</div>
+        <div class="text-body-secondary">Nivel 5</div>
+        <div class="fw-semibold text-truncate">223.123 KWH</div>
         <c-progress class="mt-2" thin value="40" aria-label="Bounce rate" />
       </c-col>
     </c-row>
   </c-card-footer>
 </c-card>
-
-<app-widgets-brand [withCharts]="true" />
 
 <c-row class="mt-4">
   <c-col xs>

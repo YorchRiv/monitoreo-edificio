@@ -40,39 +40,41 @@ export class DashboardChartsData {
     this.mainChart['Data2'] = [];
     this.mainChart['Data3'] = [];
 
-    // generate random values for mainChart
-    for (let i = 0; i <= this.mainChart['elements']; i++) {
-      this.mainChart['Data1'].push(this.random(50, 240));
-      this.mainChart['Data2'].push(this.random(20, 160));
-      this.mainChart['Data3'].push(65);
-    }
+    // Inserción manual de datos en arrays
+    const datosManual1 = [120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240];
+    const datosManual2 = [80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200];
+    const datosManual3 = Array(datosManual1.length).fill(115); // Limite constante
+
+    this.mainChart['Data1'] = datosManual1;
+    this.mainChart['Data2'] = datosManual2;
+    this.mainChart['Data3'] = datosManual3;
 
     let labels: string[] = [];
     if (period === 'Month') {
       labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
+        'Enero',
+        'Febrero',
+        'Marzo',
+        'Abril',
+        'Mayo',
+        'Junio',
+        'Julio',
+        'Agosto',
+        'Septiembre',
+        'Octubre',
+        'Noviembre',
+        'Diciembre'
       ];
     } else {
       /* tslint:disable:max-line-length */
       const week = [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday'
+        'Lunes',
+        'Martes',
+        'Miércoles',
+        'Jueves',
+        'Viernes',
+        'Sábado',
+        'Domingo'
       ];
       labels = week.concat(week, week, week);
     }
