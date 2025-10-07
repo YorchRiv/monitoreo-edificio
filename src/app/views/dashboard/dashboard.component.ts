@@ -2,6 +2,9 @@ import { NgStyle } from '@angular/common';
 import { Component, DestroyRef, DOCUMENT, effect, inject, OnInit, Renderer2, signal, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ChartOptions } from 'chart.js';
+import { SmartTablesBasicExampleComponent } from '../smart-tables/smart-tables-basic-example/smart-tables-basic-example.component';
+import { SmartTablesSelectableExampleComponent } from '../smart-tables/smart-tables-selectable-example/smart-tables-selectable-example.component';
+import { SmartTablesDownloadableExampleComponent } from '../smart-tables/smart-tables-downloadable-example/smart-tables-downloadable-example.component';
 import {
   AvatarComponent,
   ButtonDirective,
@@ -41,7 +44,7 @@ interface IUser {
 @Component({
   templateUrl: 'dashboard.component.html',
   styleUrls: ['dashboard.component.scss'],
-  imports: [WidgetsDropdownComponent, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent]
+  imports: [WidgetsDropdownComponent, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent, SmartTablesBasicExampleComponent, SmartTablesSelectableExampleComponent, SmartTablesDownloadableExampleComponent],
 })
 export class DashboardComponent implements OnInit {
   public trafficPeriodLabel: string = '';
@@ -131,6 +134,9 @@ export class DashboardComponent implements OnInit {
       color: 'dark'
     }
   ];
+
+  // Datos exclusivos para el dashboard (clonados desde `users` para evitar mutaciones)
+  public dashboardUsers = this.users.map((u, i) => ({ ...u, _selected: i === 0 }));
 
   public mainChart: IChartProps = { type: 'line' };
   public mainChartRef: WritableSignal<any> = signal(undefined);

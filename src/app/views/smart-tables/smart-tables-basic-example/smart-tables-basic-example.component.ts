@@ -13,43 +13,46 @@ import usersData from '../_data';
 @Component({
     selector: 'app-smart-tables-basic-example',
     templateUrl: './smart-tables-basic-example.component.html',
-    styleUrls: ['./smart-tables-basic-example.component.scss'],
+    styleUrls: ['./smart-tables-basic-example.component.scss'],    
     imports: [BadgeComponent, ButtonDirective, CollapseDirective, SmartTableComponent, TemplateIdDirective, TextColorDirective]
 })
 export class SmartTablesBasicExampleComponent {
 
   usersData = usersData;
+  filterText: string = '';
 
+  get filteredData() {
+    const q = this.filterText?.toString().toLowerCase().trim();
+    if (!q) return this.usersData;
+    return this.usersData.filter((item: any) => {
+      return (
+        (item.name && item.name.toString().toLowerCase().includes(q)) ||
+        (item.status && item.status.toString().toLowerCase().includes(q)) ||
+        (item.voltage !== undefined && item.voltage.toString().includes(q)) ||
+        (item.current !== undefined && item.current.toString().includes(q)) ||
+        (item.consumption !== undefined && item.consumption.toString().includes(q))
+      );
+    });
+  }
   columns: IColumn[] = [
-    {
-      key: 'name'
-    },
-    {
-      key: 'registered',
-      label: 'Date Registered',
-      _props: { class: 'text-truncate' }
-    },
-    { key: 'role', _style: { width: '20%' } },
-    { key: 'status', _style: { width: '15%' } },
-    {
-      key: 'show',
-      label: '',
-      _style: { width: '5%' },
-      filter: false,
-      sorter: false
-    }
+    { key: 'name', label: 'Nombre' },
+    { key: 'voltage', label: 'Voltaje (V)', _style: { width: '15%' } },
+    { key: 'current', label: 'Amperaje (A)', _style: { width: '15%' } },
+    { key: 'consumption', label: 'Consumo (KWH)', _style: { width: '15%' } },
+    { key: 'status', label: 'Estado', _style: { width: '15%' } },
+    { key: 'show', label: '', _style: { width: '5%' }, filter: false, sorter: false }
   ];
   details_visible = Object.create({});
 
   getBadge(status: string) {
     switch (status) {
-      case 'Active':
+      case 'Aceptable':
         return 'success';
-      case 'Inactive':
+      case 'Inactivo':
         return 'secondary';
-      case 'Pending':
+      case 'Precaucion':
         return 'warning';
-      case 'Banned':
+      case 'Alerta':
         return 'danger';
       default:
         return 'primary';

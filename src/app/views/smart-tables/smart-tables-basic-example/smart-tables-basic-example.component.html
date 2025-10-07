@@ -1,16 +1,15 @@
 <c-smart-table
-  [activePage]="3"
+  [activePage]="1"
   [columnSorter]="true"
   [columns]="columns"
   [columnFilter]="true"
   [itemsPerPageSelect]="true"
-  [itemsPerPage]="5"
+  [itemsPerPage]="10"
   [items]="usersData"
-  [sorterValue]="{ column: 'name', state: 'asc' }"
-  [tableFilter]="true"
+  [sorterValue]="{ column: 'consumption', state: 'desc' }"
+  [tableFilter]="false"
   [tableProps]="{ hover: true, striped: true, responsive: true }"
-  [tableBodyProps]="{ align: 'middle' }"
-  cleaner
+  [tableBodyProps]="{ align: 'middle' }"  
   clickableRows
   footer
   header
@@ -21,12 +20,13 @@
       <div [visible]="this.details_visible[item.id]===true" cCollapse>
         <div class="card-body">
           <h5>{{ item['name'] }}</h5>
-          <p class="text-muted">User since: {{ item['registered'] }}</p>
+          <p class="text-muted">Voltaje: {{ item['voltage'] }} V — Amperaje: {{ item['current'] }} A</p>
+          <p class="text-muted">Consumo: {{ item['consumption'] }} KWH</p>
           <button cButton color="info" size="sm">
-            User Settings
+            Ajustes
           </button>
           <button cButton class="ms-1" color="danger" size="sm">
-            Delete
+            Eliminar
           </button>
         </div>
       </div>
@@ -42,7 +42,7 @@
         }
         @case ('show') {
           <button (click)="toggleDetails(item.id)" cButton color="primary" size="sm" variant="outline">
-            Show
+            Mostrar
           </button>
         }
         @default {

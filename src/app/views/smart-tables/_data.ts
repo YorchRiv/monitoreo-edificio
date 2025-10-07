@@ -1,30 +1,18 @@
 import { IItem } from '@coreui/angular-pro';
 
 const usersData: IItem[] = [
-  {id: 0, name: 'John Doe', registered: '2018/01/01', role: 'Guest', status: 'Pending' },
-  {id: 1, name: 'Samppa Nori', registered: '2018/01/01', role: 'Member', status: 'Active'},
-  {id: 2, name: 'Estavan Lykos', registered: '2018/02/01', role: 'Staff', status: 'Banned'},
-  {id: 3, name: 'Chetan Mohamed', registered: '2018/02/01', role: 'Admin', status: 'Inactive'},
-  {id: 4, name: 'Derick Maximinus', registered: '2018/03/01', role: 'Member', status: 'Pending'},
-  {id: 5, name: 'Friderik Dávid', registered: '2018/01/21', role: 'Staff', status: 'Active'},
-  {id: 6, name: 'Yiorgos Avraamu', registered: '2018/01/01', role: 'Member', status: 'Active'},
-  {id: 7, name: 'Avram Tarasios', registered: '2018/02/01', role: 'Staff', status: 'Banned'},
-  {id: 8, name: 'Quintin Ed', registered: '2018/02/01', role: 'Admin', status: 'Inactive'},
-  {id: 9, name: 'Enéas Kwadwo', registered: '2018/03/01', role: 'Member', status: 'Pending'},
-  {id: 10, name: 'Agapetus Tadeáš', registered: '2018/01/21', role: 'Staff', status: 'Active'},
-  {id: 11, name: 'Carwyn Fachtna', registered: '2018/01/01', role: 'Member', status: 'Active'},
-  {id: 12, name: 'Nehemiah Tatius', registered: '2018/02/01', role: 'Staff', status: 'Banned'},
-  {id: 13, name: 'Ebbe Gemariah', registered: '2018/02/01', role: 'Admin', status: 'Inactive'},
-  {id: 14, name: 'Eustorgios Amulius', registered: '2018/03/01', role: 'Member', status: 'Pending'},
-  {id: 15, name: 'Leopold Gáspár', registered: '2018/01/21', role: 'Staff', status: 'Active'},
-  {id: 16, name: 'Pompeius René', registered: '2018/01/01', role: 'Member', status: 'Active'},
-  {id: 17, name: 'Paĉjo Jadon', registered: '2018/02/01', role: 'Staff', status: 'Banned'},
-  {id: 18, name: 'Micheal Mercurius', registered: '2018/02/01', role: 'Admin', status: 'Inactive'},
-  {id: 19, name: 'Ganesha Dubhghall', registered: '2018/03/01', role: 'Member', status: 'Pending'},
-  {id: 20, name: 'Hiroto Šimun', registered: '2018/01/21', role: 'Staff', status: 'Active'},
-  {id: 21, name: 'Vishnu Serghei', registered: '2018/01/01', role: 'Member', status: 'Active'},
-  {id: 22, name: 'Zbyněk Phoibos', registered: '2018/02/01', role: 'Staff', status: 'Banned'},
-  {id: 23, name: 'Aulus Agmundr', registered: '2018/01/01', role: 'Member', status: 'Pending'},
-  {id: 42, name: 'Ford Prefect', registered: '2001/05/25', role: 'Alien', status: 'Don\'t panic!'}
-]
+  { id: 0, name: 'Sótano', voltage: 220, current: 5.2, consumption: 12.4, status: 'Aceptable' },
+  { id: 1, name: 'Living', voltage: 220, current: 3.5, consumption: 8.1, status: 'Aceptable' },
+  { id: 2, name: 'Lavandería', voltage: 220, current: 10.8, consumption: 25.6, status: 'Precaucion' },
+  { id: 3, name: 'Cocina', voltage: 220, current: 12.0, consumption: 30.2, status: 'Alerta' },
+  { id: 4, name: 'Baño Principal', voltage: 220, current: 1.2, consumption: 2.9, status: 'Inactivo' },
+  { id: 5, name: 'Dormitorio Principal', voltage: 220, current: 0.8, consumption: 1.9, status: 'Aceptable' },
+  { id: 6, name: 'Dormitorio 2', voltage: 220, current: 0.7, consumption: 1.6, status: 'Aceptable' },
+  { id: 7, name: 'Balcón', voltage: 220, current: 0.3, consumption: 0.4, status: 'Aceptable' },
+  { id: 8, name: 'Oficina', voltage: 220, current: 2.4, consumption: 5.5, status: 'Aceptable' },
+  { id: 9, name: 'Salón', voltage: 220, current: 4.1, consumption: 9.8, status: 'Aceptable' },
+  { id: 10, name: 'Garaje', voltage: 220, current: 0.6, consumption: 1.2, status: 'Inactivo' },
+  { id: 11, name: 'Azotea', voltage: 220, current: 0.2, consumption: 0.3, status: 'Aceptable' }
+];
+
 export default usersData

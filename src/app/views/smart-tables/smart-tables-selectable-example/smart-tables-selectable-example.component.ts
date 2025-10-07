@@ -21,13 +21,11 @@ export class SmartTablesSelectableExampleComponent implements OnInit {
   usersData = usersData;
   selectedItems = [2, 3];
   columns = [
-    {
-      key: 'name',
-      _style: { width: '10vw', minWidth: '10vw', maxWidth: '10vw' }
-    },
-    'registered',
-    'role',
-    'status'
+    { key: 'name', _style: { width: '15vw', minWidth: '10vw', maxWidth: '20vw' }, label: 'Nombre' },
+    { key: 'voltage', label: 'Voltaje (V)' },
+    { key: 'current', label: 'Amperaje (A)' },
+    { key: 'consumption', label: 'Consumo (KWH)' },
+    { key: 'status', label: 'Estado' }
   ];
 
   ngOnInit(): void {
@@ -46,13 +44,13 @@ export class SmartTablesSelectableExampleComponent implements OnInit {
 
   getBadge(status: string) {
     switch (status) {
-      case 'Active':
+      case 'Aceptable':
         return 'success';
-      case 'Inactive':
+      case 'Inactivo':
         return 'secondary';
-      case 'Pending':
+      case 'Precaucion':
         return 'warning';
-      case 'Banned':
+      case 'Alerta':
         return 'danger';
       default:
         return 'primary';
