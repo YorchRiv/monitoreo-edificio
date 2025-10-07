@@ -44,6 +44,7 @@ interface IUser {
   imports: [WidgetsDropdownComponent, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent]
 })
 export class DashboardComponent implements OnInit {
+  public trafficPeriodLabel: string = '';
 
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
   readonly #document: Document = inject(DOCUMENT);
@@ -144,8 +145,9 @@ export class DashboardComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.initCharts();
-    this.updateChartOnColorModeChange();
+  this.initCharts();
+  this.updateTrafficPeriodLabel('Month');
+  this.updateChartOnColorModeChange();
   }
 
   initCharts(): void {
@@ -157,6 +159,31 @@ export class DashboardComponent implements OnInit {
     this.trafficRadioGroup.setValue({ trafficRadio: value });
     this.#chartsData.initMainChart(value);
     this.initCharts();
+    this.updateTrafficPeriodLabel(value);
+
+  }
+
+  updateTrafficPeriodLabel(period: string): void {
+    const today = new Date();
+    if (period === 'Day') {
+      const dd = String(today.getDate()).padStart(2, '0');
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const yyyy = today.getFullYear();
+      this.trafficPeriodLabel = `Hoy ${dd}/${mm}/${yyyy}`;
+    } else if (period === 'Month') {
+      const monthNames = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+      ];
+      const month = monthNames[today.getMonth()];
+      const yyyy = today.getFullYear();
+      this.trafficPeriodLabel = `${month} ${yyyy}`;
+    } else if (period === 'Year') {
+      const yyyy = today.getFullYear();
+      this.trafficPeriodLabel = `Enero - Diciembre ${yyyy}`;
+    } else {
+      this.trafficPeriodLabel = '';
+    }
   }
 
   handleChartRef($chartRef: any) {
