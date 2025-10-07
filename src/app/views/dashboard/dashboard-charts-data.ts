@@ -35,15 +35,9 @@ export class DashboardChartsData {
     const brandDanger = getStyle('--cui-danger') ?? '#f86c6b';
 
     // mainChart
-    this.mainChart['elements'] = period === 'Month' ? 12 : 27;
-    this.mainChart['Data1'] = [];
-    this.mainChart['Data2'] = [];
-    this.mainChart['Data3'] = [];
-
-    // Inserción manual de datos en arrays
-    const datosManual1 = [120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230,];
-    const datosManual2 = [80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200];
-    const datosManual3 = Array(datosManual1.length).fill(115); // Limite constante
+    const datosManual1 = [25, 13, 25, 1500, 16, 17, 18, 19, 20, 21, 22, 23];
+    const datosManual2 = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+    const datosManual3 = Array(datosManual1.length).fill(100); // Limite constante
 
     this.mainChart['Data1'] = datosManual1;
     this.mainChart['Data2'] = datosManual2;
@@ -51,27 +45,14 @@ export class DashboardChartsData {
 
     let labels: string[] = [];
     if (period === 'Day') {
-      // Etiquetas de 00 a 23 horas
-      labels = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0') + ':00');
-      // Ejemplo de datos manuales para cada hora
-      this.mainChart['Data1'] = Array.from({ length: 24 }, (_, i) => 100 + i * 2); // Puedes ajustar los valores
-      this.mainChart['Data2'] = Array.from({ length: 24 }, (_, i) => 80 + i * 2);
-      this.mainChart['Data3'] = Array(24).fill(115);
+      // Etiquetas de horas del día
+      labels = Array.from({ length: datosManual1.length }, (_, i) => `${i.toString().padStart(2, '0')}:00`);
     } else if (period === 'Month') {
       // Etiquetas de días del mes actual en formato dd/mm
       const today = new Date();
       const year = today.getFullYear();
-      const month = today.getMonth();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      labels = Array.from({ length: daysInMonth }, (_, i) => {
-        const day = String(i + 1).padStart(2, '0');
-        const mes = String(month + 1).padStart(2, '0');
-        return `${day}/${mes}`;
-      });
-      // Ejemplo de datos manuales para cada día
-      this.mainChart['Data1'] = Array.from({ length: daysInMonth }, (_, i) => 100 + i * 3);
-      this.mainChart['Data2'] = Array.from({ length: daysInMonth }, (_, i) => 80 + i * 2);
-      this.mainChart['Data3'] = Array(daysInMonth).fill(115);
+      const month = today.getMonth() + 1;
+      labels = Array.from({ length: datosManual1.length }, (_, i) => `${(i+1).toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}`);
     } else if (period === 'Year') {
       labels = [
         'Enero',
@@ -88,7 +69,6 @@ export class DashboardChartsData {
         'Diciembre'
       ];
     } else {
-      /* tslint:disable:max-line-length */
       const week = [
         'Lunes',
         'Martes',
@@ -155,7 +135,10 @@ export class DashboardChartsData {
       }
     };
 
-    const scales = this.getScales();
+  // Calcular el máximo de todos los datos
+  const allData = [...this.mainChart['Data1'], ...this.mainChart['Data2'], ...this.mainChart['Data3']];
+  const maxValue = Math.max(...allData);
+  const scales = this.getScales(maxValue);
 
     const options: ChartOptions = {
       maintainAspectRatio: false,
@@ -182,7 +165,7 @@ export class DashboardChartsData {
     };
   }
 
-  getScales() {
+  getScales(maxY: number = 250) {
     const colorBorderTranslucent = getStyle('--cui-border-color-translucent');
     const colorBody = getStyle('--cui-body-color');
 
@@ -203,12 +186,12 @@ export class DashboardChartsData {
         grid: {
           color: colorBorderTranslucent
         },
-        max: 250,
+        max: maxY,
         beginAtZero: true,
         ticks: {
           color: colorBody,
           maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5)
+          stepSize: Math.ceil(maxY / 5)
         }
       }
     };
