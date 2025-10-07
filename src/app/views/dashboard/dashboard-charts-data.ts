@@ -18,6 +18,20 @@ export interface IChartProps {
   providedIn: 'any'
 })
 export class DashboardChartsData {
+  // Datos manuales para Día (24 horas)
+  private dayData1 = [12, 15, 18, 20, 22, 25, 28, 30, 100, 35, 38, 40, 42, 45, 48, 50, 52, 55, 58, 60, 62, 65, 68, 70];
+  private dayData2 = [8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54];
+  private dayData3 = Array(24).fill(50);
+
+  // Datos manuales para Mes (31 días)
+  private monthData1 = [22, 25, 28, 30, 32, 35, 38, 100, 42, 45, 48, 50, 52, 55, 58, 60, 62, 65, 68, 70, 72, 75, 78, 80, 82, 85, 88, 90, 92, 95, 98];
+  private monthData2 = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70];
+  private monthData3 = Array(31).fill(60);
+
+  // Datos para Año (12 meses)
+  private yearData1 = [25, 13, 25, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+  private yearData2 = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+  private yearData3 = Array(12).fill(15);
   constructor() {
     this.initMainChart();
   }
@@ -34,10 +48,28 @@ export class DashboardChartsData {
     const brandInfoBg = `rgba(${getStyle('--cui-info-rgb')}, .1)`
     const brandDanger = getStyle('--cui-danger') ?? '#f86c6b';
 
-    // mainChart
-    const datosManual1 = [25, 13, 25, 1500, 16, 17, 18, 19, 20, 21, 22, 23];
-    const datosManual2 = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-    const datosManual3 = Array(datosManual1.length).fill(100); // Limite constante
+    // Selección de datos según el periodo
+    let datosManual1: number[];
+    let datosManual2: number[];
+    let datosManual3: number[];
+    if (period === 'Day') {
+      datosManual1 = this.dayData1;
+      datosManual2 = this.dayData2;
+      datosManual3 = this.dayData3;
+    } else if (period === 'Month') {
+      datosManual1 = this.monthData1;
+      datosManual2 = this.monthData2;
+      datosManual3 = this.monthData3;
+    } else if (period === 'Year') {
+      datosManual1 = this.yearData1;
+      datosManual2 = this.yearData2;
+      datosManual3 = this.yearData3;
+    } else {
+      // Por defecto, año
+      datosManual1 = this.yearData1;
+      datosManual2 = this.yearData2;
+      datosManual3 = this.yearData3;
+    }
 
     this.mainChart['Data1'] = datosManual1;
     this.mainChart['Data2'] = datosManual2;
@@ -45,14 +77,11 @@ export class DashboardChartsData {
 
     let labels: string[] = [];
     if (period === 'Day') {
-      // Etiquetas de horas del día
-      labels = Array.from({ length: datosManual1.length }, (_, i) => `${i.toString().padStart(2, '0')}:00`);
+      labels = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`);
     } else if (period === 'Month') {
-      // Etiquetas de días del mes actual en formato dd/mm
       const today = new Date();
-      const year = today.getFullYear();
       const month = today.getMonth() + 1;
-      labels = Array.from({ length: datosManual1.length }, (_, i) => `${(i+1).toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}`);
+      labels = Array.from({ length: this.monthData1.length }, (_, i) => `${(i+1).toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}`);
     } else if (period === 'Year') {
       labels = [
         'Enero',
