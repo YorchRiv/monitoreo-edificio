@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { ChartData } from 'chart.js';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent } from '@coreui/angular-pro';
-import { DocsCalloutComponent } from '@docs-components/public-api';
+import { SmartTablesBasicExampleComponent } from '../../smart-tables/smart-tables-basic-example/smart-tables-basic-example.component';
+import { DatePickerComponent } from '../../forms/date-picker/date-picker.component';
 
 @Component({
   selector: 'app-charts',
   templateUrl: './charts.component.html',
-  imports: [RowComponent, ColComponent, DocsCalloutComponent, CardComponent, CardHeaderComponent, CardBodyComponent, ChartjsComponent]
+  imports: [RowComponent, ColComponent, CardComponent, CardHeaderComponent, CardBodyComponent, ChartjsComponent, SmartTablesBasicExampleComponent, DatePickerComponent],
 })
 export class ChartsComponent {
 
@@ -23,7 +24,7 @@ export class ChartsComponent {
       {
         label: 'GitHub Commits',
         backgroundColor: '#f87979',
-        data: [40, 20, 12, 39, 17, 42, 79]
+        data: [40, 20, 12, 39, 17, 42, 1000]
       }
     ]
   };
