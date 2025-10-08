@@ -19,21 +19,6 @@ import usersData from '../_data';
 export class SmartTablesBasicExampleComponent {
 
   usersData = usersData;
-  filterText: string = '';
-
-  get filteredData() {
-    const q = this.filterText?.toString().toLowerCase().trim();
-    if (!q) return this.usersData;
-    return this.usersData.filter((item: any) => {
-      return (
-        (item.name && item.name.toString().toLowerCase().includes(q)) ||
-        (item.status && item.status.toString().toLowerCase().includes(q)) ||
-        (item.voltage !== undefined && item.voltage.toString().includes(q)) ||
-        (item.current !== undefined && item.current.toString().includes(q)) ||
-        (item.consumption !== undefined && item.consumption.toString().includes(q))
-      );
-    });
-  }
   columns: IColumn[] = [
     { key: 'name', label: 'Nombre' },
     { key: 'voltage', label: 'Voltaje (V)', _style: { width: '15%' } },

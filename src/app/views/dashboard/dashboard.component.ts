@@ -135,9 +135,6 @@ export class DashboardComponent implements OnInit {
     }
   ];
 
-  // Datos exclusivos para el dashboard (clonados desde `users` para evitar mutaciones)
-  public dashboardUsers = this.users.map((u, i) => ({ ...u, _selected: i === 0 }));
-
   public mainChart: IChartProps = { type: 'line' };
   public mainChartRef: WritableSignal<any> = signal(undefined);
   #mainChartRefEffect = effect(() => {
