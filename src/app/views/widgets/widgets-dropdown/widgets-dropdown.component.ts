@@ -24,8 +24,19 @@ import {
 export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
   private changeDetectorRef = inject(ChangeDetectorRef);
 
+  @Input() currentPeriod: string = 'Month';
+  @Input() currentConsumption: number = 0;
+
+  // Factor de conversión para calcular el costo en GTQ por kWh
+  private readonly conversionRate: number = 1.51;
+
   data: any[] = [];
   options: any[] = [];
+
+  // Calcula el costo total en GTQ basado en el consumo actual
+  get currentCostGTQ(): number {
+    return this.currentConsumption * this.conversionRate;
+  }
   labels = [
     'Enero',
     'Febrero',

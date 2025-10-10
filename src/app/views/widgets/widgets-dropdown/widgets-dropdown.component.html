@@ -68,7 +68,7 @@
       color="warning"
     >
       <ng-template cTemplateId="widgetValueTemplate" ngPreserveWhitespaces>
-        <span>635 KWH</span>
+        <span>{{currentConsumption}} KWH</span>
         <span class="fw-normal" style="font-size: 12px;">
           (84.7% <svg cIcon name="cilArrowTop" size="sm"></svg>)
         </span>
@@ -93,11 +93,11 @@
   </c-col>
   <c-col sm="6" xl="3">
     <c-widget-stat-a
-      [title]="'Consumo Estimado (GTQ)'"
+      [title]="'Consumo Actual (GTQ)'"
       color="danger"
     >
       <ng-template cTemplateId="widgetValueTemplate" ngPreserveWhitespaces>
-        <span>1963.56 GTQ</span>
+        <span>{{currentCostGTQ.toFixed(2)}} GTQ</span>
         <span class="fw-normal" style="font-size: 12px;">
           (-23.6% <svg cIcon name="cilArrowBottom" size="sm"></svg>)
         </span>

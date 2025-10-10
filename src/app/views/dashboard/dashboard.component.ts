@@ -146,11 +146,15 @@ export class DashboardComponent implements OnInit {
   public trafficRadioGroup = new FormGroup({
     trafficRadio: new FormControl('Month')
   });
+  public currentPeriod: string = 'Month';
+  public currentConsumption: number = 0;
 
   ngOnInit(): void {
-  this.initCharts();
-  this.updateTrafficPeriodLabel('Month');
-  this.updateChartOnColorModeChange();
+    this.currentPeriod = 'Month';
+    this.updateConsumption();
+    this.initCharts();
+    this.updateTrafficPeriodLabel('Month');
+    this.updateChartOnColorModeChange();
   }
 
   initCharts(): void {
@@ -159,11 +163,16 @@ export class DashboardComponent implements OnInit {
   }
 
   setTrafficPeriod(value: string): void {
+    this.currentPeriod = value;
     this.trafficRadioGroup.setValue({ trafficRadio: value });
     this.#chartsData.initMainChart(value);
     this.initCharts();
     this.updateTrafficPeriodLabel(value);
+    this.updateConsumption();
+  }
 
+  updateConsumption(): void {
+    this.currentConsumption = this.#chartsData.getCurrentConsumption(this.currentPeriod);
   }
 
   updateTrafficPeriodLabel(period: string): void {

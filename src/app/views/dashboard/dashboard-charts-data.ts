@@ -19,24 +19,35 @@ export interface IChartProps {
 })
 export class DashboardChartsData {
   // Datos manuales para Día (24 horas)
-  private dayData1 = [10, 20, 30, 50, 70,100,150,250,310,460, 310,250,150,100, 300, 500, 600, 400, 300, 450 ];
+  private dayData1 = [100,200,300,400,500,600,700,800,1000,1200,1400,1600, 1800,2500];
   private dayData3 = Array(24).fill(150);
 
   // Datos manuales para Mes (31 días)
-  private monthData1 = [22, 25, 28, 30, 32, 35, 38, 100, 42, 45, 48, 50, 52, 55, 58, 60, 62, 65, 68, 70, 72, 75, 78, 80, 82, 85, 88, 90, 92, 95, 98];  
-  private monthData3 = Array(31).fill(60);
+  private monthData1 = [400, 450, 430, 440, 460, 435, 422, 468, 420, 600];  
+  private monthData3Value = 500; // Valor fijo para BEP
 
   // Datos para Año (12 meses)
   private yearData1 = [25, 13, 25, 15, 16, 17, 18, 19, 20, 21, 22, 23];  
   private yearData3 = Array(12).fill(15);
   constructor() {
-    this.initMainChart();
+    this.initMainChart('Month'); // Pasar explícitamente el período por defecto
   }
 
   public mainChart: IChartProps = { type: 'line' };
 
   public random(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  /**
+   * Calcula los días del mes actual
+   * @returns Número de días del mes actual
+   */
+  private getDaysInCurrentMonth(): number {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // getMonth() es 0-indexado
+    return new Date(year, month, 0).getDate();
   }
 
   /**
@@ -124,8 +135,8 @@ export class DashboardChartsData {
       totalLength = 24;
     } else if (period === 'Month') {
       datosManual1 = this.monthData1;
-      datosManual3 = this.monthData3;
-      totalLength = 31;
+      totalLength = this.getDaysInCurrentMonth(); // Usar días reales del mes actual
+      datosManual3 = Array(totalLength).fill(this.monthData3Value); // Generar array dinámicamente
     } else if (period === 'Year') {
       datosManual1 = this.yearData1;
       datosManual3 = this.yearData3;
@@ -137,10 +148,16 @@ export class DashboardChartsData {
       totalLength = 12;
     }
 
+    // Para el período de mes, extender los datos actuales con nulls para mostrar días sin datos
+    let extendedData1 = datosManual1;
+    if (period === 'Month' && datosManual1.length < totalLength) {
+      extendedData1 = [...datosManual1, ...Array(totalLength - datosManual1.length).fill(null)];
+    }
+
     // Calcular la proyección usando regresión lineal basada en los datos actuales
     const datosManual2 = this.generateRegressionProjection(datosManual1, totalLength, period);
 
-    this.mainChart['Data1'] = datosManual1;
+    this.mainChart['Data1'] = extendedData1;
     this.mainChart['Data2'] = datosManual2;
     this.mainChart['Data3'] = datosManual3;
 
@@ -150,7 +167,8 @@ export class DashboardChartsData {
     } else if (period === 'Month') {
       const today = new Date();
       const month = today.getMonth() + 1;
-      labels = Array.from({ length: this.monthData1.length }, (_, i) => `${(i+1).toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}`);
+      const daysInMonth = this.getDaysInCurrentMonth();
+      labels = Array.from({ length: daysInMonth }, (_, i) => `${(i+1).toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}`);
     } else if (period === 'Year') {
       labels = [
         'Enero',
@@ -189,10 +207,12 @@ export class DashboardChartsData {
         fill: true
       },
       {
-        // brandSuccess
+        // Projection line - Yellow and dashed
         backgroundColor: 'transparent',
-        borderColor: brandSuccess || '#4dbd74',
-        pointHoverBackgroundColor: '#fff'
+        borderColor: '#ffc107', // Color amarillo
+        pointHoverBackgroundColor: '#ffc107',
+        borderWidth: 2,
+        borderDash: [20, 5] // Línea punteada igual que la roja
       },
       {
         // brandDanger
@@ -233,10 +253,16 @@ export class DashboardChartsData {
       }
     };
 
-  // Calcular el máximo de todos los datos
-  const allData = [...this.mainChart['Data1'], ...this.mainChart['Data2'], ...this.mainChart['Data3']];
-  const maxValue = Math.max(...allData);
-  const scales = this.getScales(maxValue);
+    // Calcular el máximo de todos los datos (filtrar nulls y valores no numéricos)
+    const allData = [
+      ...this.mainChart['Data1'].filter((val: any) => val !== null && !isNaN(val)),
+      ...this.mainChart['Data2'].filter((val: any) => val !== null && !isNaN(val)),
+      ...this.mainChart['Data3'].filter((val: any) => val !== null && !isNaN(val))
+    ];
+    const maxValue = Math.max(...allData);
+    // Agregar un margen del 10% al valor máximo para mejor visualización
+    const scaledMaxValue = maxValue * 1.1;
+    const scales = this.getScales(scaledMaxValue);
 
     const options: ChartOptions = {
       maintainAspectRatio: false,
@@ -263,7 +289,44 @@ export class DashboardChartsData {
     };
   }
 
-  getScales(maxY: number = 250) {
+  /**
+   * Calcula el valor máximo actual de todos los datos del gráfico
+   */
+  getCurrentMaxValue(): number {
+    const allData = [
+      ...this.mainChart['Data1'].filter((val: any) => val !== null && !isNaN(val)),
+      ...this.mainChart['Data2'].filter((val: any) => val !== null && !isNaN(val)),
+      ...this.mainChart['Data3'].filter((val: any) => val !== null && !isNaN(val))
+    ];
+    const maxValue = Math.max(...allData);
+    return maxValue > 0 ? maxValue * 1.1 : 250; // Agregar margen del 10% o usar 250 por defecto
+  }
+
+  /**
+   * Calcula la suma del consumo según el período seleccionado
+   * @param period Período actual ('Day', 'Month', 'Year')
+   * @returns Suma total del array correspondiente
+   */
+  getCurrentConsumption(period: string = 'Month'): number {
+    let data: number[];
+    
+    if (period === 'Day') {
+      data = this.dayData1;
+    } else if (period === 'Month') {
+      data = this.monthData1;
+    } else if (period === 'Year') {
+      data = this.yearData1;
+    } else {
+      data = this.monthData1; // Por defecto
+    }
+    
+    return data.reduce((sum, value) => sum + (value || 0), 0);
+  }
+
+  getScales(maxY?: number) {
+    // Si no se proporciona maxY, calcular dinámicamente
+    const actualMaxY = maxY ?? this.getCurrentMaxValue();
+    
     const colorBorderTranslucent = getStyle('--cui-border-color-translucent');
     const colorBody = getStyle('--cui-body-color');
 
@@ -284,12 +347,12 @@ export class DashboardChartsData {
         grid: {
           color: colorBorderTranslucent
         },
-        max: maxY,
+        max: actualMaxY,
         beginAtZero: true,
         ticks: {
           color: colorBody,
           maxTicksLimit: 5,
-          stepSize: Math.ceil(maxY / 5)
+          stepSize: Math.ceil(actualMaxY / 5)
         }
       }
     };
