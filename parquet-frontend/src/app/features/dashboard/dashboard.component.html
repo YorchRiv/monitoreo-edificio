@@ -1,0 +1,386 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard-container">
+
+  <!-- ----------------- Upload File ----------------- -->
+  <div class="upload-card">
+    <h3 class="section-title">
+      <i class="icon icon-upload"></i>
+      Subir Archivo Parquet
+    </h3>
+    
+    <!-- UPLOAD AUTOMÁTICO al seleccionar archivo -->
+    <div class="file-input-container">
+      <input 
+        type="file" 
+        (change)="onFileSelected($event)" 
+        accept=".parquet"
+        class="file-input"
+        #fileInput
+      />
+      <label class="file-label">
+        <i class="icon icon-folder"></i>
+        Seleccionar archivo .parquet
+      </label>
+    </div>
+
+    <div class="upload-info">
+      <span *ngIf="selectedFile" class="file-selected success-message">
+        <i class="icon icon-check"></i>
+        Archivo seleccionado: <strong>{{ selectedFile.name }}</strong> 
+        ({{ (selectedFile.size / 1024).toFixed(2) }} KB)
+      </span>
+      
+      <span *ngIf="currentFilePath" class="file-path">
+        <i class="icon icon-database"></i>
+        Archivo actual: {{ currentFilePath }}
+      </span>
+    </div>
+
+    <!-- 🔥 CONTROLES DE STREAMING MEJORADOS -->
+    <div class="streaming-controls" *ngIf="displayedMediciones.length > 0">
+      <div class="streaming-status">
+        <span *ngIf="isStreamingActive" class="streaming-indicator">
+          <i class="icon icon-loading"></i>
+          Streaming datos... {{ streamingProgress }}
+        </span>
+        <span *ngIf="!isStreaming && displayedMediciones.length === mediciones.length" class="streaming-complete">
+          <i class="icon icon-check"></i>
+          Streaming completado: {{ displayedMediciones.length }} registros
+        </span>
+        <span *ngIf="!isStreaming && displayedMediciones.length < mediciones.length" class="streaming-paused">
+          <i class="icon icon-pause"></i>
+          Streaming pausado: {{ displayedMediciones.length }}/{{ mediciones.length }} registros
+        </span>
+      </div>
+      
+      <!-- 🔥 BARRA DE PROGRESO -->
+      <div class="streaming-progress" *ngIf="isStreamingActive">
+        <div class="streaming-progress-bar" [style.width]="streamingProgress"></div>
+      </div>
+      
+      <div class="streaming-actions" *ngIf="isStreamingActive">
+        <button (click)="stopStreamingManually()" class="btn-secondary btn-small">
+          <i class="icon icon-clear"></i>
+          Detener Streaming
+        </button>
+      </div>
+      
+      <div class="streaming-actions" *ngIf="!isStreaming && displayedMediciones.length > 0">
+        <button (click)="restartStreaming()" class="btn-secondary btn-small">
+          <i class="icon icon-refresh"></i>
+          Reiniciar Streaming
+        </button>
+      </div>
+    </div>
+
+    <div class="upload-actions">
+      <!-- BOTÓN MANUAL (opcional) -->
+      <button 
+        (click)="uploadParquet()" 
+        [disabled]="!selectedFile || isUploading" 
+        class="btn-primary"
+        *ngIf="!autoUpload"
+      >
+        <i class="icon" [class.icon-upload]="!isUploading" [class.icon-loading]="isUploading"></i>
+        {{ isUploading ? 'Subiendo...' : 'Subir Archivo' }}
+      </button>
+
+      <!-- PROCESAR ARCHIVO ACTUAL -->
+      <button 
+        (click)="processCurrentFile()" 
+        [disabled]="!currentFilePath || isLoading"
+        class="btn-secondary"
+      >
+        <i class="icon" [class.icon-refresh]="!isLoading" [class.icon-loading]="isLoading"></i>
+        {{ isLoading ? 'Cargando...' : 'Recargar Datos' }}
+      </button>
+    </div>
+
+    <!-- TOGGLE PARA UPLOAD AUTOMÁTICO -->
+    <div class="auto-upload-toggle">
+      <label class="toggle-label">
+        <input 
+          type="checkbox" 
+          [(ngModel)]="autoUpload" 
+          (change)="onAutoUploadChange()"
+        />
+        <span class="toggle-slider"></span>
+        <span class="toggle-text">
+          <i class="icon icon-auto"></i>
+          Subir automáticamente al seleccionar archivo
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ----------------- Estadísticas ----------------- -->
+  <div class="stats-section" *ngIf="stats">
+    <h3 class="section-title">
+      <i class="icon icon-stats"></i>
+      Estadísticas del Sistema
+    </h3>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="icon icon-chart"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Total Registros</h3>
+          <p class="stat-value">{{ stats.totalRegistros | number }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="icon icon-voltage"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Voltaje Promedio</h3>
+          <p class="stat-value">{{ stats.promedioVoltaje | number:'1.2-2' }} V</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="icon icon-current"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Corriente Promedio</h3>
+          <p class="stat-value">{{ stats.promedioCorriente | number:'1.2-2' }} A</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="icon icon-energy"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Energía Total</h3>
+          <p class="stat-value">{{ stats.energiaTotal | number:'1.2-2' }} kWh</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ----------------- Filtros ----------------- -->
+  <div class="filters-card" *ngIf="stats">
+    <h3 class="section-title">
+      <i class="icon icon-filter"></i>
+      Filtros y Configuración
+    </h3>
+    <div class="filters-grid">
+      <div class="form-group">
+        <label>
+          <i class="icon icon-building"></i>
+          Edificio
+        </label>
+        <select [(ngModel)]="selectedEdificio" class="form-select">
+          <option value="">Todos los edificios</option>
+          <option *ngFor="let edificio of stats.edificios" [value]="edificio">
+            {{ edificio }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <i class="icon icon-location"></i>
+          Zona
+        </label>
+        <select [(ngModel)]="selectedZona" class="form-select">
+          <option value="">Todas las zonas</option>
+          <option *ngFor="let zona of stats.zonas" [value]="zona">
+            {{ zona }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <i class="icon icon-limit"></i>
+          Límite de registros
+        </label>
+        <input
+          type="number"
+          [(ngModel)]="limit"
+          class="form-input"
+          min="10"
+          max="10000"
+          placeholder="1000"
+        />
+      </div>
+
+      <div class="filters-actions">
+        <button (click)="applyFilters()" class="btn-primary">
+          <i class="icon icon-check"></i>
+          Aplicar Filtros
+        </button>
+        <button (click)="clearFilters()" class="btn-secondary">
+          <i class="icon icon-clear"></i>
+          Limpiar Filtros
+        </button>
+        <button (click)="processCurrentFile()" class="btn-secondary">
+          <i class="icon icon-refresh"></i>
+          Recargar Datos
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔥 3 GRÁFICAS SEPARADAS -->
+  <div class="charts-grid-three" *ngIf="displayedMediciones.length > 0">
+    
+    <!-- GRÁFICA DE VOLTAJE -->
+    <div class="chart-card chart-streaming" [class.performance-mode]="displayedMediciones.length > 1000">
+      <h4 class="chart-title">
+        <i class="icon icon-voltage"></i>
+        Voltaje (V)
+        <span *ngIf="isStreamingActive" class="streaming-badge">En vivo</span>
+      </h4>
+      <div class="chart-container">
+        <canvas
+          baseChart
+          [data]="voltajeChartData"
+          [options]="voltajeChartOptions"
+          [type]="lineChartType"
+        ></canvas>
+      </div>
+    </div>
+
+    <!-- GRÁFICA DE CORRIENTE -->
+    <div class="chart-card chart-streaming" [class.performance-mode]="displayedMediciones.length > 1000">
+      <h4 class="chart-title">
+        <i class="icon icon-current"></i>
+        Corriente (A)
+        <span *ngIf="isStreamingActive" class="streaming-badge">En vivo</span>
+      </h4>
+      <div class="chart-container">
+        <canvas
+          baseChart
+          [data]="corrienteChartData"
+          [options]="corrienteChartOptions"
+          [type]="lineChartType"
+        ></canvas>
+      </div>
+    </div>
+
+    <!-- GRÁFICA DE POTENCIA -->
+    <div class="chart-card chart-streaming" [class.performance-mode]="displayedMediciones.length > 1000">
+      <h4 class="chart-title">
+        <i class="icon icon-power"></i>
+        Potencia (W)
+        <span *ngIf="isStreamingActive" class="streaming-badge">En vivo</span>
+      </h4>
+      <div class="chart-container">
+        <canvas
+          baseChart
+          [data]="potenciaChartData"
+          [options]="potenciaChartOptions"
+          [type]="lineChartType"
+        ></canvas>
+      </div>
+    </div>
+
+    <!-- GRÁFICA DE BARRAS (ENERGÍA POR EDIFICIO) -->
+    <div class="chart-card chart-streaming" [class.performance-mode]="displayedMediciones.length > 1000">
+      <h4 class="chart-title">
+        <i class="icon icon-building"></i>
+        Energía por Edificio
+        <span *ngIf="isStreamingActive" class="streaming-badge">En vivo</span>
+      </h4>
+      <div class="chart-container">
+        <canvas
+          baseChart
+          [data]="barChartData"
+          [options]="barChartOptions"
+          [type]="barChartType"
+        ></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ----------------- Tabla de Datos Optimizada para Streaming ----------------- -->
+  <div class="table-card" *ngIf="displayedMediciones.length > 0">
+    <h3 class="section-title">
+      <i class="icon icon-table"></i>
+      Datos en Tiempo Real ({{ displayedMediciones.length }} registros)
+      <span *ngIf="isStreamingActive" class="streaming-badge">En vivo</span>
+    </h3>
+
+    <div *ngIf="isLoading" class="loading">
+      <div class="spinner"></div>
+      <span>Cargando datos...</span>
+    </div>
+    
+    <div *ngIf="errorMessage" class="error-message">
+      <i class="icon icon-error"></i>
+      {{ errorMessage }}
+    </div>
+
+    <!-- 🔥 AGREGAR performance-mode A LA TABLA CUANDO HAY MUCHOS DATOS -->
+    <div class="table-container" *ngIf="!isLoading" [class.performance-mode]="displayedMediciones.length > 1000">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>
+              <i class="icon icon-voltage"></i>
+              Voltaje (V)
+            </th>
+            <th>
+              <i class="icon icon-current"></i>
+              Corriente (A)
+            </th>
+            <th>
+              <i class="icon icon-power"></i>
+              Potencia (W)
+            </th>
+            <th>
+              <i class="icon icon-energy"></i>
+              Energía (kWh)
+            </th>
+            <th>
+              <i class="icon icon-building"></i>
+              Edificio
+            </th>
+            <th>
+              <i class="icon icon-location"></i>
+              Zona
+            </th>
+            <th>
+              <i class="icon icon-calendar"></i>
+              Fecha
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 🔥 USAR visibleMediciones EN LUGAR DE slice PARA MEJOR PERFORMANCE -->
+          <tr *ngFor="let medicion of visibleMediciones" 
+              [class.new-row]="isStreamingActive && isRecentRow(medicion)">
+            <td>{{ medicion.id_medicion }}</td>
+            <td>{{ medicion.voltaje | number:'1.2-2' }}</td>
+            <td>{{ medicion.corriente | number:'1.2-2' }}</td>
+            <td>{{ medicion.potencia_calc | number:'1.2-2' }}</td>
+            <td>{{ medicion.energia_acumulada_calc | number:'1.2-2' }}</td>
+            <td>{{ medicion.edificio_nombre }}</td>
+            <td>{{ medicion.zona_nombre }}</td>
+            <td>{{ medicion.fecha_creacion | date:'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-footer" *ngIf="displayedMediciones.length > 50">
+      <i class="icon icon-info"></i>
+      <span>Mostrando últimos 50 registros de {{ displayedMediciones.length }}</span>
+      <span *ngIf="isStreamingActive" class="streaming-notice">• Nuevos datos entrando...</span>
+      <!-- 🔥 INDICADOR DE PERFORMANCE -->
+      <span *ngIf="displayedMediciones.length > 1000" class="performance-indicator">
+        • Modo performance activado
+      </span>
+    </div>
+  </div>
+
+</div>

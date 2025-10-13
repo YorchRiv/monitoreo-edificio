@@ -1,0 +1,12 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <h2>📊 Parquet Viewer</h2>
+    </div>
+
+    <div class="navbar-menu" *ngIf="currentUser">
+      <span class="navbar-user">👤 {{ currentUser.email }}</span>
+      <button (click)="logout()" class="btn-logout">Cerrar Sesión</button>
+    </div>
+  </div>
+</nav>
