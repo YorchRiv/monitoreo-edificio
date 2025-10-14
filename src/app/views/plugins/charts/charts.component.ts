@@ -1,16 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ChartData } from 'chart.js';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent } from '@coreui/angular-pro';
 import { SmartTablesBasicExampleComponent } from '../../smart-tables/smart-tables-basic-example/smart-tables-basic-example.component';
 import { DatePickerComponent } from '../../forms/date-picker/date-picker.component';
+import { HistorialDatePickerComponent } from './historial-date-picker.component';
+import { ParquetDataService, MedicionData } from '../../../services/parquet-data.service';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-charts',
   templateUrl: './charts.component.html',
-  imports: [RowComponent, ColComponent, CardComponent, CardHeaderComponent, CardBodyComponent, ChartjsComponent, SmartTablesBasicExampleComponent, DatePickerComponent],
+  imports: [CommonModule, RowComponent, ColComponent, CardComponent, CardHeaderComponent, CardBodyComponent, ChartjsComponent, SmartTablesBasicExampleComponent, DatePickerComponent, HistorialDatePickerComponent],
 })
-export class ChartsComponent {
+export class ChartsComponent implements OnInit {
+
+  // Datos para la tabla
+  public currentApiData: MedicionData[] = [];
+  public isLoadingData: boolean = false;
+  public selectedDateRange = {
+    startDate: '',
+    endDate: ''
+  };
+
+  constructor(private parquetDataService: ParquetDataService) {}
 
   options = {
     maintainAspectRatio: false
@@ -138,6 +152,83 @@ export class ChartsComponent {
 
   get randomData() {
     return Math.round(Math.random() * 100);
+  }
+
+  ngOnInit(): void {
+    this.initializeDefaultDateRange();
+    this.loadDataForDateRange();
+  }
+
+  /**
+   * Inicializa el rango de fechas por defecto (mes actual)
+   */
+  private initializeDefaultDateRange(): void {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    
+    // Primer día del mes
+    this.selectedDateRange.startDate = `${year}-${month.toString().padStart(2, '0')}-01`;
+    
+    // Último día del mes
+    const lastDay = new Date(year, month, 0).getDate();
+    this.selectedDateRange.endDate = `${year}-${month.toString().padStart(2, '0')}-${lastDay} 23:59:59`;
+  }
+
+  /**
+   * Carga datos para el rango de fechas seleccionado
+   */
+  private loadDataForDateRange(): void {
+    this.isLoadingData = true;
+    
+    const filter = {
+      limit: 5000,
+      fechaInicio: this.selectedDateRange.startDate,
+      fechaFin: this.selectedDateRange.endDate
+    };
+
+    this.parquetDataService.getFilteredData(filter)
+      .pipe(
+        catchError(error => {
+          console.error('Error al cargar datos de la API en historial:', error);
+          this.isLoadingData = false;
+          return of(null);
+        })
+      )
+      .subscribe(response => {
+        if (response && response.success) {
+          this.currentApiData = response.data;
+        } else {
+          this.currentApiData = [];
+        }
+        this.isLoadingData = false;
+      });
+  }
+
+  /**
+   * Actualiza el rango de fechas y recarga los datos
+   * @param dateRange Objeto con startDate y endDate
+   */
+  public updateDateRange(dateRange: {startDate: string, endDate: string}): void {
+    this.selectedDateRange.startDate = dateRange.startDate;
+    this.selectedDateRange.endDate = dateRange.endDate + ' 23:59:59';
+    this.loadDataForDateRange();
+  }
+
+  /**
+   * Formatea una fecha para mostrar en la interfaz
+   * @param dateString Fecha en formato YYYY-MM-DD
+   * @returns Fecha formateada en español
+   */
+  public formatDisplayDate(dateString: string): string {
+    if (!dateString) return '';
+    
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: '2-digit', 
+      year: 'numeric'
+    });
   }
 
 }

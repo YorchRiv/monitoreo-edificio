@@ -1,10 +1,13 @@
-import { NgStyle } from '@angular/common';
+import { NgStyle, NgIf } from '@angular/common';
 import { Component, DestroyRef, DOCUMENT, effect, inject, OnInit, Renderer2, signal, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ChartOptions } from 'chart.js';
 import { SmartTablesBasicExampleComponent } from '../smart-tables/smart-tables-basic-example/smart-tables-basic-example.component';
 import { SmartTablesSelectableExampleComponent } from '../smart-tables/smart-tables-selectable-example/smart-tables-selectable-example.component';
 import { SmartTablesDownloadableExampleComponent } from '../smart-tables/smart-tables-downloadable-example/smart-tables-downloadable-example.component';
+import { ParquetDataService, MedicionData } from '../../services/parquet-data.service';
+import { DataProcessingService } from '../../services/data-processing.service';
+import { catchError, of, forkJoin } from 'rxjs';
 import {
   AvatarComponent,
   ButtonDirective,
@@ -44,15 +47,20 @@ interface IUser {
 @Component({
   templateUrl: 'dashboard.component.html',
   styleUrls: ['dashboard.component.scss'],
-  imports: [WidgetsDropdownComponent, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent, SmartTablesBasicExampleComponent, SmartTablesSelectableExampleComponent, SmartTablesDownloadableExampleComponent],
+  imports: [WidgetsDropdownComponent, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, NgIf, CardFooterComponent, GutterDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent, SmartTablesBasicExampleComponent, SmartTablesSelectableExampleComponent, SmartTablesDownloadableExampleComponent],
 })
 export class DashboardComponent implements OnInit {
   public trafficPeriodLabel: string = '';
+  public isLoadingData: boolean = false;
+  public currentApiData: MedicionData[] = [];
+  public previousApiData: MedicionData[] = [];
 
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
   readonly #document: Document = inject(DOCUMENT);
   readonly #renderer: Renderer2 = inject(Renderer2);
   readonly #chartsData: DashboardChartsData = inject(DashboardChartsData);
+  readonly #parquetDataService: ParquetDataService = inject(ParquetDataService);
+  readonly #dataProcessingService: DataProcessingService = inject(DataProcessingService);
 
   public users: IUser[] = [
     {
@@ -151,10 +159,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentPeriod = 'Month';
-    this.updateConsumption();
-    this.initCharts();
     this.updateTrafficPeriodLabel('Month');
     this.updateChartOnColorModeChange();
+    this.loadDataForPeriod('Month');
   }
 
   initCharts(): void {
@@ -165,10 +172,70 @@ export class DashboardComponent implements OnInit {
   setTrafficPeriod(value: string): void {
     this.currentPeriod = value;
     this.trafficRadioGroup.setValue({ trafficRadio: value });
-    this.#chartsData.initMainChart(value);
-    this.initCharts();
     this.updateTrafficPeriodLabel(value);
-    this.updateConsumption();
+    this.loadDataForPeriod(value);
+  }
+
+  /**
+   * Carga datos de la API según el período seleccionado
+   */
+  loadDataForPeriod(period: string): void {
+    this.isLoadingData = true;
+    
+    let currentFilter, previousFilter;
+    switch (period) {
+      case 'Day':
+        currentFilter = this.#parquetDataService.getDayFilter();
+        previousFilter = this.#parquetDataService.getPreviousDayFilter();
+        break;
+      case 'Month':
+        currentFilter = this.#parquetDataService.getMonthFilter();
+        previousFilter = this.#parquetDataService.getPreviousMonthFilter();
+        break;
+      case 'Year':
+        currentFilter = this.#parquetDataService.getYearFilter();
+        previousFilter = this.#parquetDataService.getPreviousYearFilter();
+        break;
+      default:
+        currentFilter = this.#parquetDataService.getMonthFilter();
+        previousFilter = this.#parquetDataService.getPreviousMonthFilter();
+    }
+
+    // Cargar datos actuales y anteriores en paralelo
+    const currentRequest = this.#parquetDataService.getFilteredData(currentFilter);
+    const previousRequest = this.#parquetDataService.getFilteredData(previousFilter);
+
+    // Usar forkJoin para hacer ambas peticiones en paralelo
+    forkJoin([currentRequest, previousRequest])
+      .pipe(
+        catchError(error => {
+          console.error('Error al cargar datos de la API:', error);
+          // En caso de error, usar datos estáticos como fallback
+          this.#chartsData.initMainChart(period);
+          this.initCharts();
+          this.updateConsumption();
+          this.isLoadingData = false;
+          return of([null, null]);
+        })
+      )
+      .subscribe(([currentResponse, previousResponse]) => {
+        if (currentResponse && currentResponse.success) {
+          // Guardar datos de la API
+          this.currentApiData = currentResponse.data;
+          this.previousApiData = previousResponse && previousResponse.success ? previousResponse.data : [];
+          
+          // Procesar datos de la API para el gráfico
+          const processedData = this.#dataProcessingService.processDataForChart(currentResponse.data, period);
+          
+          // Actualizar gráfico con datos de la API
+          this.#chartsData.updateChartWithApiData(processedData);
+          this.initCharts();
+          
+          // Actualizar consumo con el valor calculado
+          this.currentConsumption = processedData.totalConsumption;
+        }
+        this.isLoadingData = false;
+      });
   }
 
   updateConsumption(): void {

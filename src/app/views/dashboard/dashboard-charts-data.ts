@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ChartData, ChartDataset, ChartOptions, ChartType, PluginOptionsByType, ScaleOptions, TooltipLabelStyle } from 'chart.js';
 import { DeepPartial } from './utils';
 import { getStyle } from '@coreui/utils';
+import { ProcessedChartData } from '../../services/data-processing.service';
 
 export interface IChartProps {
   data?: ChartData;
@@ -303,11 +304,126 @@ export class DashboardChartsData {
   }
 
   /**
+   * Actualiza el gráfico con datos de la API
+   * @param processedData Datos procesados de la API
+   */
+  updateChartWithApiData(processedData: ProcessedChartData): void {
+    this.mainChart['Data1'] = processedData.currentData;
+    this.mainChart['Data2'] = processedData.projectionData;
+    this.mainChart['Data3'] = processedData.bepData;
+
+    // Actualizar la configuración del gráfico
+    this.updateChartConfig(processedData.labels, processedData.currentData, processedData.projectionData, processedData.bepData);
+  }
+
+  /**
+   * Actualiza la configuración del gráfico con nuevos datos
+   */
+  private updateChartConfig(labels: string[], data1: number[], data2: number[], data3: number[]): void {
+    const brandSuccess = getStyle('--cui-success') ?? '#4dbd74';
+    const brandInfo = getStyle('--cui-info') ?? '#20a8d8';
+    const brandInfoBg = `rgba(${getStyle('--cui-info-rgb')}, .1)`;
+    const brandDanger = getStyle('--cui-danger') ?? '#f86c6b';
+
+    const colors = [
+      {
+        // brandInfo
+        backgroundColor: brandInfoBg,
+        borderColor: brandInfo,
+        pointHoverBackgroundColor: brandInfo,
+        borderWidth: 2,
+        fill: true
+      },
+      {
+        // Projection line - Yellow and dashed
+        backgroundColor: 'transparent',
+        borderColor: '#ffc107', // Color amarillo
+        pointHoverBackgroundColor: '#ffc107',
+        borderWidth: 2,
+        borderDash: [20, 5] // Línea punteada igual que la roja
+      },
+      {
+        // brandDanger
+        backgroundColor: 'transparent',
+        borderColor: brandDanger || '#f86c6b',
+        pointHoverBackgroundColor: brandDanger,
+        borderWidth: 1,
+        borderDash: [8, 5]
+      }
+    ];
+
+    const datasets: ChartDataset[] = [
+      {
+        data: data1,
+        label: 'Current',
+        ...colors[0]
+      },
+      {
+        data: data2,
+        label: 'Projection',
+        ...colors[1]
+      },
+      {
+        data: data3,
+        label: 'BEP',
+        ...colors[2]
+      }
+    ];
+
+    const plugins: DeepPartial<PluginOptionsByType<any>> = {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        callbacks: {
+          labelColor: (context) => ({ backgroundColor: context.dataset.borderColor } as TooltipLabelStyle)
+        }
+      }
+    };
+
+    // Calcular el máximo de todos los datos
+    const allData = [...data1, ...data2, ...data3].filter(val => val !== null && !isNaN(val));
+    const maxValue = Math.max(...allData);
+    const scaledMaxValue = maxValue * 1.1;
+    const scales = this.getScales(scaledMaxValue);
+
+    const options: ChartOptions = {
+      maintainAspectRatio: false,
+      plugins,
+      scales,
+      elements: {
+        line: {
+          tension: 0.4
+        },
+        point: {
+          radius: 0,
+          hitRadius: 10,
+          hoverRadius: 4,
+          hoverBorderWidth: 3
+        }
+      }
+    };
+
+    this.mainChart.type = 'line';
+    this.mainChart.options = options;
+    this.mainChart.data = {
+      datasets,
+      labels
+    };
+  }
+
+  /**
    * Calcula la suma del consumo según el período seleccionado
    * @param period Período actual ('Day', 'Month', 'Year')
    * @returns Suma total del array correspondiente
    */
   getCurrentConsumption(period: string = 'Month'): number {
+    // Si hay datos de la API, usar esos
+    if (this.mainChart['Data1']) {
+      return this.mainChart['Data1'].reduce((sum: number, value: number) => sum + (value || 0), 0);
+    }
+
+    // Fallback a datos estáticos
     let data: number[];
     
     if (period === 'Day') {

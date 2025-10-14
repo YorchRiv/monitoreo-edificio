@@ -1,10 +1,17 @@
-<app-widgets-dropdown [currentPeriod]="currentPeriod" [currentConsumption]="currentConsumption" />
+<app-widgets-dropdown 
+  [currentPeriod]="currentPeriod" 
+  [currentConsumption]="currentConsumption"
+  [currentApiData]="currentApiData"
+  [previousApiData]="previousApiData" />
 <c-card class="my-4">
   <c-card-body>
     <c-row>
       <c-col sm="5">
         <h4 class="card-title mb-0" id="traffic">Consumo Electrico</h4>
-  <div class="small text-body-secondary">{{ trafficPeriodLabel }}</div>
+        <div class="small text-body-secondary">{{ trafficPeriodLabel }}</div>
+        <div *ngIf="isLoadingData" class="small text-info mt-1">
+          <i class="fa fa-spinner fa-spin"></i> Cargando datos...
+        </div>
       </c-col>
       <c-col class="d-none d-md-block" sm="7">
         <button cButton class="float-end" color="primary" aria-label="Download">
@@ -80,4 +87,7 @@
   </c-card-body>
 </c-card>
 
-<app-smart-tables-basic-example></app-smart-tables-basic-example>
+<app-smart-tables-basic-example 
+  [apiData]="currentApiData" 
+  [isLoading]="isLoadingData">
+</app-smart-tables-basic-example>

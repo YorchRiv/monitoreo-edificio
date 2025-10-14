@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { NgIf } from '@angular/common';
 import {
   BadgeComponent,
   ButtonDirective,
@@ -8,26 +9,41 @@ import {
   TemplateIdDirective,
   TextColorDirective
 } from '@coreui/angular-pro';
-import usersData from '../_data';
+import { TableRowData, TableDataService } from '../../../services/table-data.service';
+import { MedicionData } from '../../../services/parquet-data.service';
 
 @Component({
     selector: 'app-smart-tables-basic-example',
     templateUrl: './smart-tables-basic-example.component.html',
     styleUrls: ['./smart-tables-basic-example.component.scss'],    
-    imports: [BadgeComponent, ButtonDirective, CollapseDirective, SmartTableComponent, TemplateIdDirective, TextColorDirective]
+    imports: [NgIf, BadgeComponent, ButtonDirective, CollapseDirective, SmartTableComponent, TemplateIdDirective, TextColorDirective]
 })
-export class SmartTablesBasicExampleComponent {
+export class SmartTablesBasicExampleComponent implements OnChanges {
+  @Input() apiData: MedicionData[] = [];
+  @Input() isLoading: boolean = false;
 
-  usersData = usersData;
+  tableData: TableRowData[] = [];
   columns: IColumn[] = [
-    { key: 'name', label: 'Nombre' },
-    { key: 'voltage', label: 'Voltaje (V)', _style: { width: '15%' } },
-    { key: 'current', label: 'Amperaje (A)', _style: { width: '15%' } },
-    { key: 'consumption', label: 'Consumo (KWH)', _style: { width: '15%' } },
-    { key: 'status', label: 'Estado', _style: { width: '15%' } },
-    { key: 'show', label: '', _style: { width: '5%' }, filter: false, sorter: false }
+    { key: 'edificio', label: 'Edificio', _style: { width: '20%' } },
+    { key: 'zona', label: 'Zona', _style: { width: '20%' } },
+    { key: 'nivel', label: 'Nivel', _style: { width: '20%' } },
+    { key: 'voltaje', label: 'Voltaje', _style: { width: '15%' } },
+    { key: 'corriente', label: 'Corriente', _style: { width: '15%' } },
+    { key: 'potencia', label: 'Potencia', _style: { width: '15%' } }
   ];
   details_visible = Object.create({});
+
+  constructor(private tableDataService: TableDataService) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['apiData'] && this.apiData) {
+      this.processTableData();
+    }
+  }
+
+  private processTableData(): void {
+    this.tableData = this.tableDataService.processDataForTable(this.apiData);
+  }
 
   getBadge(status: string) {
     switch (status) {

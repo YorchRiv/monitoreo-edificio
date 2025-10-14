@@ -1,13 +1,18 @@
+<div *ngIf="isLoading" class="text-center p-4">
+  <i class="fa fa-spinner fa-spin"></i> Cargando datos de la tabla...
+</div>
+
 <c-smart-table
+  *ngIf="!isLoading"
   [activePage]="1"
   [columnSorter]="true"
   [columns]="columns"
   [columnFilter]="true"
   [itemsPerPageSelect]="true"
   [itemsPerPage]="10"
-  [items]="usersData"
-  [sorterValue]="{ column: 'consumption', state: 'desc' }"
-  [tableFilter]="false"
+  [items]="tableData"
+  [sorterValue]="{ column: 'potencia', state: 'desc' }"
+  [tableFilter]="true"
   [tableProps]="{ hover: true, striped: true, responsive: true }"
   [tableBodyProps]="{ align: 'middle' }"  
   clickableRows
@@ -15,36 +20,17 @@
   header
   pagination
 >
-  <ng-template cTemplateId="tableDetails" let-item="item">
-    <div>
-      <div [visible]="this.details_visible[item.id]===true" cCollapse>
-        <div class="card-body">
-          <h5>{{ item['name'] }}</h5>
-          <p class="text-muted">Voltaje: {{ item['voltage'] }} V — Amperaje: {{ item['current'] }} A</p>
-          <p class="text-muted">Consumo Actual: {{ item['consumption'] }} KWH</p>
-          <p class="text-muted">Limite Establecido: {{ item['limit'] }} KWH</p>
-          <button cButton color="info" size="sm">
-            Definir Limite
-          </button>
-          <button cButton class="ms-1" color="danger" size="sm">
-            Eliminar
-          </button>
-        </div>
-      </div>
-    </div>
-  </ng-template>
   <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item" let-tdContent="tdContent">
     <td>
       @switch (columnName) {
-        @case ('status') {
-          <c-badge [color]="getBadge(tdContent)">
-            {{ (item[columnName]) }}
-          </c-badge>
+        @case ('voltaje') {
+          {{ tdContent }} V
         }
-        @case ('show') {
-          <button (click)="toggleDetails(item.id)" cButton color="primary" size="sm" variant="outline">
-            Limite
-          </button>
+        @case ('corriente') {
+          {{ tdContent }} A
+        }
+        @case ('potencia') {
+          {{ tdContent }} W
         }
         @default {
           {{ tdContent }}

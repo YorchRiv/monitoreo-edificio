@@ -1,7 +1,12 @@
-<app-date-picker></app-date-picker>
-<app-smart-tables-basic-example></app-smart-tables-basic-example>
+<!-- Date picker section -->
+<app-historial-date-picker 
+  [isLoading]="isLoadingData"
+  (dateRangeChange)="updateDateRange($event)">
+</app-historial-date-picker>
+
+<!-- Gráficas Chart.js - Parte Superior -->
 <c-row>
-  <c-col xs="12" lg="6">
+  <c-col xs="12" lg="4">
     <c-card class="mb-4">
       <c-card-header>
         Consumo (GTQ)
@@ -11,7 +16,7 @@
       </c-card-body>
     </c-card>
   </c-col>
-  <c-col xs="12" lg="6">
+  <c-col xs="12" lg="4">
     <c-card class="mb-4">
       <c-card-header>
         Line Chart
@@ -21,9 +26,7 @@
       </c-card-body>
     </c-card>
   </c-col>
-</c-row>
-<c-row>
-  <c-col xs="12" lg="6">
+  <c-col xs="12" lg="4">
     <c-card class="mb-4">
       <c-card-header>
         Doughnut Chart
@@ -33,7 +36,39 @@
       </c-card-body>
     </c-card>
   </c-col>
-  <c-col xs="12" lg="6">
+</c-row>
+
+<!-- Smart table with filtered data -->
+<c-row>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Tabla de Datos - Período Seleccionado</strong>
+        <small class="text-muted ms-2" *ngIf="selectedDateRange.startDate && selectedDateRange.endDate">
+          ({{ formatDisplayDate(selectedDateRange.startDate) }} - {{ formatDisplayDate(selectedDateRange.endDate.split(' ')[0]) }})
+        </small>
+      </c-card-header>
+      <c-card-body>
+        <div *ngIf="!isLoadingData && currentApiData.length === 0 && selectedDateRange.startDate" 
+             class="text-center text-muted py-4">
+          <i class="fa fa-info-circle fa-2x mb-3"></i>
+          <p>No se encontraron datos para el período seleccionado.</p>
+          <p class="small">Intente seleccionar un rango de fechas diferente.</p>
+        </div>
+        
+        <app-smart-tables-basic-example 
+          [apiData]="currentApiData" 
+          [isLoading]="isLoadingData"
+          *ngIf="isLoadingData || currentApiData.length > 0">
+        </app-smart-tables-basic-example>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+<!-- Gráficas Chart.js - Parte Inferior -->
+<c-row>
+  <c-col xs="12" lg="4">
     <c-card class="mb-4">
       <c-card-header>
         Pie Chart
@@ -43,9 +78,7 @@
       </c-card-body>
     </c-card>
   </c-col>
-</c-row>
-<c-row>
-  <c-col xs="12" lg="6">
+  <c-col xs="12" lg="4">
     <c-card class="mb-4">
       <c-card-header>
         Polar Area Chart
@@ -55,7 +88,7 @@
       </c-card-body>
     </c-card>
   </c-col>
-  <c-col xs="12" lg="6">
+  <c-col xs="12" lg="4">
     <c-card class="mb-4">
       <c-card-header>
         Radar Chart

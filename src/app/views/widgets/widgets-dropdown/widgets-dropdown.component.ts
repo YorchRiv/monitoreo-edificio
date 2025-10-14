@@ -1,8 +1,11 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, inject, Input, OnInit, viewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, inject, Input, OnInit, OnChanges, SimpleChanges, viewChild } from '@angular/core';
+import { NgIf } from '@angular/common';
 import { getStyle } from '@coreui/utils';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { RouterLink } from '@angular/router';
 import { IconDirective } from '@coreui/icons-angular';
+import { CardData, CardDataService } from '../../../services/card-data.service';
+import { MedicionData } from '../../../services/parquet-data.service';
 import {
   ButtonDirective,
   ColComponent,
@@ -19,13 +22,16 @@ import {
 @Component({
   selector: 'app-widgets-dropdown',
   templateUrl: './widgets-dropdown.component.html',
-  imports: [RowComponent, ColComponent, WidgetStatAComponent, TemplateIdDirective, IconDirective, DropdownComponent, ButtonDirective, DropdownToggleDirective, DropdownMenuDirective, DropdownItemDirective, RouterLink, DropdownDividerDirective, ChartjsComponent]
+  imports: [NgIf, RowComponent, ColComponent, WidgetStatAComponent, TemplateIdDirective, IconDirective, DropdownComponent, ButtonDirective, DropdownToggleDirective, DropdownMenuDirective, DropdownItemDirective, RouterLink, DropdownDividerDirective, ChartjsComponent]
 })
-export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
+export class WidgetsDropdownComponent implements OnInit, AfterContentInit, OnChanges {
   private changeDetectorRef = inject(ChangeDetectorRef);
+  private cardDataService = inject(CardDataService);
 
   @Input() currentPeriod: string = 'Month';
   @Input() currentConsumption: number = 0;
+  @Input() currentApiData: MedicionData[] = [];
+  @Input() previousApiData: MedicionData[] = [];
 
   // Factor de conversión para calcular el costo en GTQ por kWh
   private readonly conversionRate: number = 1.51;
@@ -33,9 +39,97 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
   data: any[] = [];
   options: any[] = [];
 
+  // Datos procesados de las cards
+  cardData: CardData = this.cardDataService.getEmptyCardData();
+
   // Calcula el costo total en GTQ basado en el consumo actual
   get currentCostGTQ(): number {
-    return this.currentConsumption * this.conversionRate;
+    return this.cardData.consumoKWH.actual * this.conversionRate;
+  }
+
+  /**
+   * Formatea un número con 2 decimales y separadores de miles con comas
+   * @param value Número a formatear
+   * @returns String formateado (ej: "1,234.56")
+   */
+  formatNumber(value: number): string {
+    return value.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['currentApiData'] || changes['previousApiData']) {
+      this.updateCardData();
+    }
+  }
+
+  /**
+   * Actualiza los datos de las cards con información de la API
+   */
+  private updateCardData(): void {
+    if (this.currentApiData.length > 0) {
+      this.cardData = this.cardDataService.processCardData(this.currentApiData, this.previousApiData);
+    } else {
+      this.cardData = this.cardDataService.getEmptyCardData();
+    }
+  }
+
+  /**
+   * Formatea el voltaje con 2 decimales y comas
+   */
+  get formattedVoltage(): string {
+    return this.formatNumber(this.cardData.voltaje.actual);
+  }
+
+  /**
+   * Formatea el amperaje con 2 decimales y comas
+   */
+  get formattedCurrent(): string {
+    return this.formatNumber(this.cardData.amperaje.actual);
+  }
+
+  /**
+   * Formatea el consumo con 2 decimales y comas
+   */
+  get formattedConsumption(): string {
+    return this.formatNumber(this.cardData.consumoKWH.actual);
+  }
+
+  /**
+   * Formatea el costo con 2 decimales y comas
+   */
+  get formattedCostGTQ(): string {
+    return this.formatNumber(this.currentCostGTQ);
+  }
+
+  /**
+   * Obtiene el cambio porcentual formateado para voltaje
+   */
+  get voltageChangeFormatted(): string {
+    return this.formatNumber(this.cardData.voltaje.cambio);
+  }
+
+  /**
+   * Obtiene el cambio porcentual formateado para amperaje
+   */
+  get currentChangeFormatted(): string {
+    return this.formatNumber(this.cardData.amperaje.cambio);
+  }
+
+  /**
+   * Obtiene el cambio porcentual formateado para consumo
+   */
+  get consumptionChangeFormatted(): string {
+    return this.formatNumber(this.cardData.consumoKWH.cambio);
+  }
+
+  /**
+   * Calcula el cambio porcentual del costo basado en el consumo
+   */
+  get costChangeFormatted(): string {
+    return this.formatNumber(this.cardData.consumoKWH.cambio); // El costo sigue el mismo patrón que el consumo
   }
   labels = [
     'Enero',
