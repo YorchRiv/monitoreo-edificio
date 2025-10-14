@@ -48,5 +48,8 @@ export class ParquetQueryDto {
   offset?: number = 0;
   edificio?: string;
   zona?: string;
+  nivel?: string;
+  fechaInicio?: string; // Formato: YYYY-MM-DD HH:mm:ss o YYYY-MM-DD
+  fechaFin?: string;    // Formato: YYYY-MM-DD HH:mm:ss o YYYY-MM-DD
   filePath?: string;
 }

@@ -62,21 +62,49 @@ export class ParquetController {
     limit?: number; 
     edificio?: string; 
     zona?: string; 
+    nivel?: string;
+    fechaInicio?: string;
+    fechaFin?: string;
   }) {
     try {
-      const { filePath, limit, edificio, zona } = body;
+      const { filePath, limit, edificio, zona, nivel, fechaInicio, fechaFin } = body;
       
       if (!filePath) {
         throw new BadRequestException('filePath es requerido');
       }
 
+      // Validar formato de fechas si se proporcionan
+      if (fechaInicio && isNaN(new Date(fechaInicio).getTime())) {
+        throw new BadRequestException('fechaInicio debe tener un formato de fecha válido (YYYY-MM-DD o YYYY-MM-DD HH:mm:ss)');
+      }
+      
+      if (fechaFin && isNaN(new Date(fechaFin).getTime())) {
+        throw new BadRequestException('fechaFin debe tener un formato de fecha válido (YYYY-MM-DD o YYYY-MM-DD HH:mm:ss)');
+      }
+
       this.logger.log(`📖 Leyendo archivo: ${filePath}`);
-      const result = await this.parquetService.getData(filePath, limit, edificio, zona);
+      const result = await this.parquetService.getData(
+        filePath, 
+        limit, 
+        edificio, 
+        zona, 
+        nivel, 
+        fechaInicio, 
+        fechaFin
+      );
       
       return {
         success: true,
         totalRegistros: result.total,
         registrosMostrados: result.data.length,
+        filtros: { 
+          limit, 
+          edificio, 
+          zona, 
+          nivel, 
+          fechaInicio, 
+          fechaFin 
+        },
         data: result.data
       };
 
@@ -173,25 +201,54 @@ export class ParquetController {
       limit?: number; 
       edificio?: string; 
       zona?: string; 
+      nivel?: string;
+      fechaInicio?: string;
+      fechaFin?: string;
     }
   ) {
     try {
       const filePath = process.env.PARQUET_FILE_PATH;
-      const { limit, edificio, zona } = body;
+      const { limit, edificio, zona, nivel, fechaInicio, fechaFin } = body;
 
       if (!filePath) {
         throw new BadRequestException('PARQUET_FILE_PATH no está configurado');
       }
 
+      // Validar formato de fechas si se proporcionan
+      if (fechaInicio && isNaN(new Date(fechaInicio).getTime())) {
+        throw new BadRequestException('fechaInicio debe tener un formato de fecha válido (YYYY-MM-DD o YYYY-MM-DD HH:mm:ss)');
+      }
+      
+      if (fechaFin && isNaN(new Date(fechaFin).getTime())) {
+        throw new BadRequestException('fechaFin debe tener un formato de fecha válido (YYYY-MM-DD o YYYY-MM-DD HH:mm:ss)');
+      }
+
       this.logger.log(`🔍 Aplicando filtros locales: ${filePath}`);
-      const result = await this.parquetService.getData(filePath, limit, edificio, zona);
+      this.logger.log(`Filtros: edificio=${edificio}, zona=${zona}, nivel=${nivel}, fechaInicio=${fechaInicio}, fechaFin=${fechaFin}`);
+      
+      const result = await this.parquetService.getData(
+        filePath, 
+        limit, 
+        edificio, 
+        zona, 
+        nivel, 
+        fechaInicio, 
+        fechaFin
+      );
       
       return {
         success: true,
         message: '✅ Datos filtrados correctamente',
         totalRegistros: result.total,
         registrosMostrados: result.data.length,
-        filtros: { limit, edificio, zona },
+        filtros: { 
+          limit, 
+          edificio, 
+          zona, 
+          nivel, 
+          fechaInicio, 
+          fechaFin 
+        },
         data: result.data
       };
 

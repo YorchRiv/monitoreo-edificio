@@ -105,7 +105,10 @@ export class ParquetService {
     filePath: string, 
     limit?: number, 
     edificio?: string, 
-    zona?: string
+    zona?: string,
+    nivel?: string,
+    fechaInicio?: string,
+    fechaFin?: string
   ): Promise<{ data: MedicionElectrica[]; total: number }> {
     let data = await this.readParquetFile(filePath);
 
@@ -115,6 +118,44 @@ export class ParquetService {
     }
     if (zona) {
       data = data.filter(d => d.zona_nombre === zona);
+    }
+    if (nivel) {
+      data = data.filter(d => d.nivel_nombre === nivel);
+    }
+
+    // Filtrar por rango de fechas
+    if (fechaInicio || fechaFin) {
+      data = data.filter(d => {
+        if (!d.fecha_creacion) return false;
+        
+        const fechaRegistro = new Date(d.fecha_creacion);
+        
+        // Validar que la fecha del registro es válida
+        if (isNaN(fechaRegistro.getTime())) return false;
+        
+        let cumpleFechaInicio = true;
+        let cumpleFechaFin = true;
+        
+        if (fechaInicio) {
+          const fechaIni = new Date(fechaInicio);
+          if (!isNaN(fechaIni.getTime())) {
+            cumpleFechaInicio = fechaRegistro >= fechaIni;
+          }
+        }
+        
+        if (fechaFin) {
+          const fechaFinal = new Date(fechaFin);
+          if (!isNaN(fechaFinal.getTime())) {
+            // Si solo se proporciona fecha (sin hora), incluir todo el día
+            if (fechaFin.length === 10) { // Formato YYYY-MM-DD
+              fechaFinal.setHours(23, 59, 59, 999);
+            }
+            cumpleFechaFin = fechaRegistro <= fechaFinal;
+          }
+        }
+        
+        return cumpleFechaInicio && cumpleFechaFin;
+      });
     }
 
     const total = data.length;

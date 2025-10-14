@@ -19,16 +19,16 @@ export interface IChartProps {
 })
 export class DashboardChartsData {
   // Datos manuales para Día (24 horas)
-  private dayData1 = [100,200,300,400,500,600,700,800,1000,1200,1400,1600, 1800,2500];
-  private dayData3 = Array(24).fill(150);
+  private dayData1 = [9000,8000,7000,5000,4000,3000,2000,1000,1000,1200,1400,1600, 1800,2500, 2600, 2800, 2550, 2900, 3000, 3800, 2400, 3560];
+  private dayData3 = Array(24).fill(3000);
 
   // Datos manuales para Mes (31 días)
   private monthData1 = [400, 450, 430, 440, 460, 435, 422, 468, 420, 600];  
   private monthData3Value = 500; // Valor fijo para BEP
 
   // Datos para Año (12 meses)
-  private yearData1 = [25, 13, 25, 15, 16, 17, 18, 19, 20, 21, 22, 23];  
-  private yearData3 = Array(12).fill(15);
+  private yearData1 = [3000, 4800, 5600, 3200, 4560, 5100, 3900, 3800, 2400, 3560, 5000, 4000];  
+  private yearData3 = Array(12).fill(5000);
   constructor() {
     this.initMainChart('Month'); // Pasar explícitamente el período por defecto
   }
