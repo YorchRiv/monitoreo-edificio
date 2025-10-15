@@ -29,7 +29,6 @@ import {
                   <c-date-picker 
                     formControlName="startDate"
                     locale="es-ES" 
-                    [date]="defaultStartDate"
                     closeOnSelect />
                 </c-col>
                 <c-col lg="4">
@@ -37,7 +36,6 @@ import {
                   <c-date-picker 
                     formControlName="endDate"
                     locale="es-ES" 
-                    [date]="defaultEndDate"
                     closeOnSelect />
                 </c-col>
                 <c-col lg="4" class="d-flex align-items-end">
@@ -83,13 +81,16 @@ export class HistorialDatePickerComponent implements OnInit {
   defaultEndDate: Date;
 
   constructor() {
-    // Inicializar fechas por defecto (mes actual)
+    // Inicializar fechas por defecto (primer día del mes actual hasta hoy)
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth();
     
-    this.defaultStartDate = new Date(year, month, 1); // Primer día del mes
-    this.defaultEndDate = new Date(year, month + 1, 0); // Último día del mes
+    // Crear fechas específicas para evitar problemas de zona horaria
+    this.defaultStartDate = new Date(year, month, 1, 12, 0, 0, 0); // Primer día del mes actual
+    this.defaultEndDate = new Date(year, month, today.getDate(), 12, 0, 0, 0); // Día actual
+
+
 
     this.dateForm = new FormGroup({
       startDate: new FormControl(this.defaultStartDate),
@@ -98,8 +99,17 @@ export class HistorialDatePickerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Forzar los valores en los controles del formulario
+    this.dateForm.patchValue({
+      startDate: this.defaultStartDate,
+      endDate: this.defaultEndDate
+    });
+    
     // Emitir las fechas por defecto al inicializar
-    this.emitDefaultDateRange();
+    // Usar setTimeout para asegurar que el componente padre esté listo
+    setTimeout(() => {
+      this.emitDefaultDateRange();
+    }, 100);
   }
 
   private emitDefaultDateRange(): void {

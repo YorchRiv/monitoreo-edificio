@@ -355,17 +355,17 @@ export class DashboardChartsData {
     const datasets: ChartDataset[] = [
       {
         data: data1,
-        label: 'Current',
+        label: 'Consumo',
         ...colors[0]
       },
       {
         data: data2,
-        label: 'Projection',
+        label: 'Proyeccion',
         ...colors[1]
       },
       {
         data: data3,
-        label: 'BEP',
+        label: 'Limite Establecido',
         ...colors[2]
       }
     ];
