@@ -12,6 +12,11 @@ export const navItems: INavData[] = [
     url: '/plugins/charts'
   },
   {
+    name: 'Proyecciones',
+    iconComponent: { name: 'cil-chart-pie' },
+    url: '/buttons/button-groups'
+  },
+  {
     title: true,
     name: 'Theme'
   },
