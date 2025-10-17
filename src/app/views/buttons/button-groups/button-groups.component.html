@@ -114,7 +114,7 @@
   <c-col xs="12">
     <c-card>
       <c-card-header>
-        <span>Invoice <strong>#90-98792</strong></span>
+        <span>Proyeccion de Consumo <strong>Este Dia</strong></span>
         <div class="d-print-none float-end">
           <button (click)="print($event)" cButton class="me-1" color="secondary" size="sm">
             <svg cIcon name="cilPrint" size="sm"></svg>
@@ -129,117 +129,123 @@
       <c-card-body>
         <c-row class="mb-4">
           <c-col sm="4">
-            <h6 class="mb-3">From:</h6>
+            <h6 class="mb-3">Monitoreo:</h6>
             <div>
-              <strong>Your Great Company Inc.</strong>
+              <strong>Edificio Zona 10</strong>
             </div>
-            <div>724 John Ave.</div>
-            <div>Cupertino, CA 95014</div>
-            <div>Email: email&#64;your-great-company.com</div>
-            <div>Phone: +1 123-456-7890</div>
+            <div>Dirección: Ciudad de Guatemala</div>
+            <div>Responsable: Ing. Jorge Mejicanos</div>
+            <div>Email: jmejicanosr&#64;miumg.edu.gt</div>
+            <div>Sensor: MX-245-12</div>
           </c-col>
           <c-col sm="4">
-            <h6 class="mb-3">To:</h6>
+            <h6 class="mb-3">Cliente:</h6>
             <div>
-              <strong>Acme Inc.</strong>
+              <strong>Area de Energia y Mantenimiento</strong>
             </div>
-            <div>159 Manor Station Road</div>
-            <div>San Diego, CA 92154</div>
-            <div>Email: email&#64;acme.com</div>
-            <div>Phone: +1 123-456-7890</div>
+            <div>Contacto: energia@empresa.com</div>
+            <div>Zona 10, Ciudad de Guatemala</div>
+            <div>Fecha de Reporte: 16/10/2025</div>
+            <div>Periodo Analizado: 16/10/2025</div>
           </c-col>
           <c-col sm="4">
-            <h6 class="mb-3">Details:</h6>
+            <h6 class="mb-3">Detalle</h6>
             <div>
-              Invoice <strong>#90-98792</strong>
+              Fecha Reporte <strong>16/10/2025</strong>
             </div>
-            <div>March 30, 2020</div>
-            <div>VAT: EU9877281777</div>
-            <div>Account Name: ACME</div>
-            <div>
-              <strong>SWIFT code: 99 8888 7777 6666 5555</strong>
-            </div>
+            <div>Tipo de Analisis: Proyeccion Diaria</div>
+            <div>Umbral de Referencia: 10,000KWH mensuales</div>
+            <div>Estado: Dentro de Limites / Sobreconsumo</div>
+            
           </c-col>
         </c-row>
         <table [hover]="true" [responsive]="true" [striped]="true" cTable>
           <thead>
             <tr>
               <th class="text-center">#</th>
-              <th>Item</th>
-              <th>Description</th>
-              <th class="text-center">Quantity</th>
-              <th class="text-end">Unit Cost</th>
-              <th class="text-end">Total</th>
+              <th>Variable</th>
+              <th>Descripción</th>
+              <th class="text-center">Valor promedio</th>
+              <th class="text-end">Proyección</th>
+              <th class="text-end">Unidad</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td class="text-center">1</td>
-              <td class="text-start">Origin License</td>
-              <td class="text-start">Extended License</td>
-              <td class="text-center">1</td>
-              <td class="text-end">$999,00</td>
-              <td class="text-end">$999,00</td>
+              <td class="text-start">Consumo total (kWh)</td>
+              <td class="text-start">Energía registrada en el período</td>
+              <td class="text-center">8 497</td>
+              <td class="text-end">9 100</td>
+              <td class="text-end">kWh (proyectado)</td>
             </tr>
             <tr>
               <td class="text-center">2</td>
-              <td class="text-start">Custom Services</td>
-              <td class="text-start">Installation and Customization (per hour)</td>
-              <td class="text-center">20</td>
-              <td class="text-end">$150,00</td>
-              <td class="text-end">$3.000,00</td>
+              <td class="text-start">Voltaje promedio (V)</td>
+              <td class="text-start">Promedio de tensión registrada</td>
+              <td class="text-center">230.5</td>
+              <td class="text-end">—</td>
+              <td class="text-end">V</td>
             </tr>
             <tr>
               <td class="text-center">3</td>
-              <td class="text-start">Hosting</td>
-              <td class="text-start">1 year subscription</td>
-              <td class="text-center">1</td>
-              <td class="text-end">$499,00</td>
-              <td class="text-end">$499,00</td>
+              <td class="text-start">Corriente promedio (A)</td>
+              <td class="text-start">Corriente media por fase</td>
+              <td class="text-center">118.3</td>
+              <td class="text-end">—</td>
+              <td class="text-end">A</td>
             </tr>
             <tr>
               <td class="text-center">4</td>
-              <td class="text-start">Platinum Support</td>
-              <td class="text-start">1 year subscription 24/7</td>
-              <td class="text-center">1</td>
-              <td class="text-end">$3.999,00</td>
-              <td class="text-end">$3.999,00</td>
+              <td class="text-start">Potencia promedio (kW)</td>
+              <td class="text-start">Potencia activa media</td>
+              <td class="text-center">24.8</td>
+              <td class="text-end">—</td>
+              <td class="text-end">kW</td>
+            </tr>
+            <tr>
+              <td class="text-center">5</td>
+              <td class="text-start">Costo unitario (Q/kWh)</td>
+              <td class="text-start">Tarifa aplicada</td>
+              <td class="text-center">1.51</td>
+              <td class="text-end">—</td>
+              <td class="text-end">Q/kWh</td>
+            </tr>
+            <tr>
+              <td class="text-center">6</td>
+              <td class="text-start">Costo total estimado</td>
+              <td class="text-start">Basado en consumo proyectado</td>
+              <td class="text-center">—</td>
+              <td class="text-end">13 741.00</td>
+              <td class="text-end">Q</td>
             </tr>
           </tbody>
         </table>
         <c-row>
           <c-col lg="4" sm="5">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            La proyección se calcula en base al promedio móvil de los últimos 6 meses de consumo, ajustado por tendencia estacional.
           </c-col>
           <c-col class="ms-auto" lg="4" sm="5">
             <table [hover]="true" [responsive]="true" cTable color="success">
               <tbody>
                 <tr>
                   <td class="text-start">
-                    <strong>Subtotal</strong>
+                    <strong>Consumo Total Proyectado</strong>
                   </td>
-                  <td class="text-end">$8.497,00</td>
+                  <td class="text-end">9,100 kWh</td>
                 </tr>
                 <tr>
                   <td class="text-start">
-                    <strong>Discount (20%)</strong>
+                    <strong>Tarifa por kWh</strong>
                   </td>
-                  <td class="text-end">$1,699,40</td>
+                  <td class="text-end">Q 1.51</td>
                 </tr>
                 <tr>
                   <td class="text-start">
-                    <strong>VAT (10%)</strong>
-                  </td>
-                  <td class="text-end">$679,76</td>
-                </tr>
-                <tr>
-                  <td class="text-start">
-                    <strong>Total</strong>
+                    <strong>Total Estimado</strong>
                   </td>
                   <td class="text-end">
-                    <strong>$7.477,36</strong>
+                    <strong>Q 13,741.00</strong>
                   </td>
                 </tr>
               </tbody>
