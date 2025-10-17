@@ -1,0 +1,125 @@
+/* Estilos para los filtros avanzados */
+.filter-section {
+  border-left: 3px solid #007bff;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.filter-section h6 {
+  color: #495057;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.filter-section h6 i {
+  color: #007bff;
+}
+
+.checkbox-group {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.checkbox-group::-webkit-scrollbar {
+  width: 4px;
+}
+
+.checkbox-group::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.checkbox-group::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.checkbox-group::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.filter-label {
+  font-size: 0.9rem;
+  margin-bottom: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.filter-label:hover {
+  color: #007bff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .filter-section {
+    border-left: none;
+    border-top: 3px solid #007bff;
+    padding-left: 0;
+    padding-top: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .checkbox-group {
+    max-height: 150px;
+  }
+}
+
+/* Animation for buttons */
+.btn {
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Loading state */
+.spinner-border-sm {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+/* Card improvements */
+.card-header strong {
+  color: #495057;
+}
+
+.text-muted {
+  font-style: italic;
+}
+
+/* Widget statistics improvements */
+c-widget-stat-b {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+c-widget-stat-b:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Progress bars styling */
+c-progress {
+  height: 4px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+c-progress .progress-bar {
+  transition: width 0.6s ease;
+}
+
+/* Widget responsive adjustments */
+@media (max-width: 576px) {
+  .g-4 {
+    gap: 1rem !important;
+  }
+}
+
+/* Icon styling for widgets */
+svg[cIcon] {
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+}

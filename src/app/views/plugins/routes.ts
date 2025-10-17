@@ -21,6 +21,10 @@ export const routes: Routes = [
         loadChildren: () => import('./charts/routes').then((m) => m.routes)
       },
       {
+        path: 'charts2',
+        loadChildren: () => import('./charts2/routes').then((m) => m.routes)
+      },
+      {
         path: 'google-maps',
         loadChildren: () => import('./maps/routes').then((m) => m.routes)
       }

@@ -1,0 +1,302 @@
+<!-- Widgets de Estadísticas -->
+<c-row class="g-4 mb-4">
+  <c-col xl="3" md="6" sm="6">
+    <c-widget-stat-b
+      [title]="'Voltaje (Promedio)'"
+      text="Promedio de todos los datos filtrados"
+      [value]="voltajePromedio.toFixed(2) + ' V'">
+      <c-progress class="my-2" thin [value]="getProgressValue(voltajePromedio, 250)" color="info-gradient" />
+    </c-widget-stat-b>
+  </c-col>
+  
+  <c-col xl="3" md="6" sm="6">
+    <c-widget-stat-b
+      [title]="'Amperaje (Total)'"
+      text="Suma total de corriente"
+      [value]="amperajeSuma.toFixed(2) + ' A'">
+      <c-progress class="my-2" thin [value]="getProgressValue(amperajeSuma, 1000)" color="warning-gradient" />
+    </c-widget-stat-b>
+  </c-col>
+  
+  <c-col xl="3" md="6" sm="6">
+    <c-widget-stat-b
+      [title]="'Consumo (kWh)'"
+      text="Energía total consumida"
+      [value]="consumoKwhSuma.toFixed(2) + ' kWh'">
+      <c-progress class="my-2" thin [value]="getProgressValue(consumoKwhSuma, 50000)" color="success-gradient" />
+    </c-widget-stat-b>
+  </c-col>
+  
+  <c-col xl="3" md="6" sm="6">
+    <c-widget-stat-b
+      [title]="'Consumo (GTQ)'"
+      text="Costo total a Q.1.51 por kWh"
+      [value]="'Q.' + consumoGtqSuma.toFixed(2)">
+      <c-progress class="my-2" thin [value]="getProgressValue(consumoGtqSuma, 75000)" color="danger-gradient" />
+    </c-widget-stat-b>
+  </c-col>
+</c-row>
+
+<!-- Gráficas Chart.js - Parte Inferior -->
+<c-row>
+  <c-col xs="6" lg="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        Line Chart
+      </c-card-header>
+      <c-card-body>
+        <c-chart type="line" [data]="chartLineData" [options]="options" />
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+<!-- Date picker section -->
+<app-historial-date-picker 
+  [isLoading]="isLoadingData"
+  (dateRangeChange)="updateDateRange($event)">
+</app-historial-date-picker>
+
+<!-- Advanced Filters Section -->
+<c-row class="mb-4">
+  <c-col xs="12">
+    <c-card>
+      <c-card-header>
+        <strong>Filtros Avanzados</strong>
+        <small class="text-muted ms-2">Selecciona los elementos a incluir en el análisis</small>
+      </c-card-header>
+      <c-card-body>
+        <form [formGroup]="filtersForm">
+          <c-row>
+            <!-- Edificios -->
+            <c-col xs="12" md="4">
+              <div class="filter-section">
+                <h6 class="mb-3">
+                  <i class="fas fa-building me-2"></i>Edificios
+                  <button 
+                    type="button" 
+                    class="btn btn-sm btn-outline-secondary ms-2"
+                    (click)="toggleAllBuildings()"
+                    title="Seleccionar/Deseleccionar todos">
+                    <i class="fas fa-check-double"></i>
+                  </button>
+                </h6>
+                <div formGroupName="edificios" class="checkbox-group">
+                  <c-form-check 
+                    *ngFor="let edificio of availableBuildings"
+                    class="mb-2">
+                    <input 
+                      cFormCheckInput 
+                      type="checkbox" 
+                      [formControlName]="getFormControlName(edificio)"
+                      [id]="'edificio-' + getFormControlName(edificio)"
+                      (change)="onFilterChange()" />
+                    <label 
+                      cFormCheckLabel 
+                      [for]="'edificio-' + getFormControlName(edificio)"
+                      class="filter-label">
+                      {{ edificio }}
+                    </label>
+                  </c-form-check>
+                </div>
+              </div>
+            </c-col>
+
+            <!-- Zonas -->
+            <c-col xs="12" md="4">
+              <div class="filter-section">
+                <h6 class="mb-3">
+                  <i class="fas fa-map-marker-alt me-2"></i>Zonas
+                  <button 
+                    type="button" 
+                    class="btn btn-sm btn-outline-secondary ms-2"
+                    (click)="toggleAllZones()"
+                    title="Seleccionar/Deseleccionar todos">
+                    <i class="fas fa-check-double"></i>
+                  </button>
+                </h6>
+                <div formGroupName="zonas" class="checkbox-group">
+                  <c-form-check 
+                    *ngFor="let zona of availableZones"
+                    class="mb-2">
+                    <input 
+                      cFormCheckInput 
+                      type="checkbox" 
+                      [formControlName]="getFormControlName(zona)"
+                      [id]="'zona-' + getFormControlName(zona)"
+                      (change)="onFilterChange()" />
+                    <label 
+                      cFormCheckLabel 
+                      [for]="'zona-' + getFormControlName(zona)"
+                      class="filter-label">
+                      {{ zona }}
+                    </label>
+                  </c-form-check>
+                </div>
+              </div>
+            </c-col>
+
+            <!-- Niveles -->
+            <c-col xs="12" md="4">
+              <div class="filter-section">
+                <h6 class="mb-3">
+                  <i class="fas fa-layer-group me-2"></i>Niveles
+                  <button 
+                    type="button" 
+                    class="btn btn-sm btn-outline-secondary ms-2"
+                    (click)="toggleAllLevels()"
+                    title="Seleccionar/Deseleccionar todos">
+                    <i class="fas fa-check-double"></i>
+                  </button>
+                </h6>
+                <div formGroupName="niveles" class="checkbox-group">
+                  <c-form-check 
+                    *ngFor="let nivel of availableLevels"
+                    class="mb-2">
+                    <input 
+                      cFormCheckInput 
+                      type="checkbox" 
+                      [formControlName]="getFormControlName(nivel)"
+                      [id]="'nivel-' + getFormControlName(nivel)"
+                      (change)="onFilterChange()" />
+                    <label 
+                      cFormCheckLabel 
+                      [for]="'nivel-' + getFormControlName(nivel)"
+                      class="filter-label">
+                      {{ nivel }}
+                    </label>
+                  </c-form-check>
+                </div>
+              </div>
+            </c-col>
+          </c-row>
+
+          <!-- Action Buttons -->
+          <c-row class="mt-4">
+            <c-col xs="12">
+              <div class="d-flex justify-content-end gap-2">
+                <button 
+                  type="button" 
+                  class="btn btn-outline-secondary"
+                  (click)="resetFilters()">
+                  <i class="fas fa-undo me-2"></i>Resetear Filtros
+                </button>
+                <button 
+                  type="button" 
+                  class="btn btn-primary"
+                  (click)="applyFilters()"
+                  [disabled]="isLoadingData">
+                  <i class="fas fa-filter me-2"></i>
+                  <span *ngIf="!isLoadingData">Aplicar Filtros</span>
+                  <span *ngIf="isLoadingData">
+                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                    Aplicando...
+                  </span>
+                </button>
+              </div>
+            </c-col>
+          </c-row>
+        </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+
+
+<!-- Gráficas Chart.js - Parte Superior -->
+<c-row>
+  <c-col xs="12" lg="6">
+    <c-card class="mb-4">
+      <c-card-header>
+        {{ barChartTitle }}
+      </c-card-header>
+      <c-card-body>
+        <c-chart type="bar" [data]="chartBarData" [options]="barChartOptions" />
+      </c-card-body>
+    </c-card>
+  </c-col>
+  
+  <c-col xs="12" lg="6">
+    <c-card class="mb-4">
+      <c-card-header>
+        {{ doughnutChartTitle }}
+      </c-card-header>
+      <c-card-body>
+        <c-chart type="doughnut" [data]="chartDoughnutData" [options]="doughnutChartOptions" />
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+<!-- Smart table with filtered data -->
+<c-row>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Tabla de Datos - Período Seleccionado</strong>
+        <small class="text-muted ms-2" *ngIf="selectedDateRange.startDate && selectedDateRange.endDate">
+          ({{ formatDisplayDate(selectedDateRange.startDate) }} - {{ formatDisplayDate(selectedDateRange.endDate.split(' ')[0]) }})
+        </small>
+      </c-card-header>
+      <c-card-body>
+        <div *ngIf="!isLoadingData && currentApiData.length === 0 && selectedDateRange.startDate" 
+             class="text-center text-muted py-4">
+          <i class="fa fa-info-circle fa-2x mb-3"></i>
+          <p>No se encontraron datos para el período seleccionado.</p>
+          <p class="small">Intente seleccionar un rango de fechas diferente.</p>
+        </div>
+        
+        <app-smart-tables-basic-example 
+          [apiData]="currentApiData" 
+          [isLoading]="isLoadingData"
+          *ngIf="isLoadingData || currentApiData.length > 0">
+        </app-smart-tables-basic-example>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+<!-- Gráficas Chart.js - Parte Inferior -->
+<c-row>
+  <c-col xs="12" lg="4">
+    <c-card class="mb-4">
+      <c-card-header>
+        Pie Chart
+      </c-card-header>
+      <c-card-body>
+        <c-chart type="pie" [data]="chartPieData" [options]="options" />
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12" lg="4">
+    <c-card class="mb-4">
+      <c-card-header>
+        Polar Area Chart
+      </c-card-header>
+      <c-card-body>
+        <c-chart type="polarArea" [data]="chartPolarAreaData" [options]="options" />
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12" lg="4">
+    <c-card class="mb-4">
+      <c-card-header>
+        Radar Chart
+      </c-card-header>
+      <c-card-body>
+        <c-chart type="radar" [data]="chartRadarData" [options]="options" />
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12" lg="6">
+    <c-card class="mb-4">
+      <c-card-header>
+        Line Chart
+      </c-card-header>
+      <c-card-body>
+        <c-chart type="line" [data]="chartLineData" [options]="options" />
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
