@@ -53,7 +53,7 @@
             color="warning-gradient"
             inverse
             text="Proyección del costo total del período"
-            [value]="'Q ' + consumoEstimadoGTQ.toFixed(2)"
+            [value]="'Q ' + formatearNumero(consumoEstimadoGTQ)"
           >
             <c-progress [white]="widgetStatB3inv.inverse()" class="my-2" thin [value]="(consumoEstimadoGTQ/15000)*100" />
           </c-widget-stat-b>
@@ -65,7 +65,7 @@
             color="primary-gradient"
             inverse
             text="Proyección del consumo total del período"
-            [value]="consumoEstimadoKWH.toFixed(2) + ' kWh'"
+            [value]="formatearNumero(consumoEstimadoKWH) + ' kWh'"
           >
             <c-progress [white]="widgetStatB4inv.inverse()" class="my-2" thin [value]="(consumoEstimadoKWH/10000)*100" />
           </c-widget-stat-b>
@@ -145,17 +145,18 @@
             </div>
             <div>Contacto: energia@empresa.com</div>
             <div>Zona 10, Ciudad de Guatemala</div>
-            <div>Fecha de Reporte: 16/10/2025</div>
-            <div>Periodo Analizado: 16/10/2025</div>
+            <div>Fecha de Reporte: {{ obtenerFechaActual() }}</div>
+            <div>Periodo Analizado: {{ obtenerPeriodoAnalisis() }}</div>
           </c-col>
           <c-col sm="4">
             <h6 class="mb-3">Detalle</h6>
             <div>
-              Fecha Reporte <strong>16/10/2025</strong>
+              Fecha Reporte <strong>{{ obtenerFechaActual() }}</strong>
             </div>
-            <div>Tipo de Analisis: Proyeccion Diaria</div>
-            <div>Umbral de Referencia: 10,000KWH mensuales</div>
-            <div>Estado: Dentro de Limites / Sobreconsumo</div>
+            <div>Tipo de Analisis: {{ obtenerTipoAnalisis() }}</div>
+            <div>Umbral de Referencia: {{ obtenerUmbralReferencia() }}</div>
+            <div [ngStyle]="{'color': estaEnLimites() ? 'green' : 'red'}">
+              Estado: {{ estaEnLimites() ? 'Dentro de Limites' : 'Sobreconsumo' }}</div>
             
           </c-col>
         </c-row>
@@ -175,8 +176,8 @@
               <td class="text-center">1</td>
               <td class="text-start">Consumo total (kWh)</td>
               <td class="text-start">Energía registrada en el período</td>
-              <td class="text-center">{{ consumoEstimadoKWH.toFixed(0) }}</td>
-              <td class="text-end">{{ (consumoEstimadoKWH * calcularFactorProyeccion(periodo)).toFixed(0) }}</td>
+              <td class="text-center">{{ formatearNumero(consumoEstimadoKWH) }}</td>
+              <td class="text-end">{{ formatearNumero(consumoEstimadoKWH * calcularFactorProyeccion(periodo)) }}</td>
               <td class="text-end">kWh (proyectado)</td>
             </tr>
             <tr>
@@ -199,7 +200,7 @@
               <td class="text-center">4</td>
               <td class="text-start">Potencia promedio (kW)</td>
               <td class="text-start">Potencia activa media</td>
-              <td class="text-center">{{ (voltajePromedio * corrientePromedio / 1000).toFixed(1) }}</td>
+              <td class="text-center">{{ formatearNumero(voltajePromedio * corrientePromedio / 1000) }}</td>
               <td class="text-end">—</td>
               <td class="text-end">kW</td>
             </tr>
@@ -216,7 +217,7 @@
               <td class="text-start">Costo total estimado</td>
               <td class="text-start">Basado en consumo proyectado</td>
               <td class="text-center">—</td>
-              <td class="text-end">{{ consumoEstimadoGTQ.toFixed(2) }}</td>
+              <td class="text-end">{{ formatearNumero(consumoEstimadoGTQ) }}</td>
               <td class="text-end">Q</td>
             </tr>
           </tbody>
@@ -232,20 +233,20 @@
                   <td class="text-start">
                     <strong>Consumo Total Proyectado</strong>
                   </td>
-                  <td class="text-end">9,100 kWh</td>
+                  <td class="text-end">{{ formatearNumero(consumoEstimadoKWH) }} kWh</td>
                 </tr>
                 <tr>
                   <td class="text-start">
                     <strong>Tarifa por kWh</strong>
                   </td>
-                  <td class="text-end">Q 1.51</td>
+                  <td class="text-end">Q {{ tarifaActual.toFixed(2) }}</td>
                 </tr>
                 <tr>
                   <td class="text-start">
                     <strong>Total Estimado</strong>
                   </td>
                   <td class="text-end">
-                    <strong>Q 13,741.00</strong>
+                    <strong>Q {{ formatearNumero(consumoEstimadoGTQ) }}</strong>
                   </td>
                 </tr>
               </tbody>

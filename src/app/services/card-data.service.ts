@@ -79,9 +79,21 @@ export class CardDataService {
       };
     }
 
-    const voltajePromedio = data.reduce((sum, item) => sum + item.voltaje, 0) / data.length;
-    const amperajeTotal = data.reduce((sum, item) => sum + item.corriente, 0); // Suma total de corriente
-    const consumoTotal = data.reduce((sum, item) => sum + item.potencia_calc, 0);
+    // Filtrar datos futuros
+    const now = new Date();
+    const validData = data.filter(item => new Date(item.fecha_creacion) <= now);
+
+    if (validData.length === 0) {
+      return {
+        voltajePromedio: 0,
+        amperajeTotal: 0,
+        consumoTotal: 0
+      };
+    }
+
+    const voltajePromedio = validData.reduce((sum, item) => sum + item.voltaje, 0) / validData.length;
+    const amperajeTotal = validData.reduce((sum, item) => sum + item.corriente, 0); // Suma total de corriente
+    const consumoTotal = validData.reduce((sum, item) => sum + item.energia_acumulada_calc, 0);
 
     return {
       voltajePromedio: Math.round(voltajePromedio * 100) / 100,

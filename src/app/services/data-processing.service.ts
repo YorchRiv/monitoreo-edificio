@@ -48,23 +48,24 @@ export class DataProcessingService {
     
     // Crear array de 24 horas inicializado en 0
     const hourlyData = new Array(24).fill(0);
-    const hourlyCount = new Array(24).fill(0);
 
-    // Agrupar datos por hora, ignorando datos futuros
-    data.forEach(item => {
+    // Filtrar datos futuros primero
+    const filteredData = data.filter(item => new Date(item.fecha_creacion) <= now);
+
+    // Agrupar datos por hora
+    filteredData.forEach(item => {
       const fecha = new Date(item.fecha_creacion);
       const hour = fecha.getHours();
       
       // Solo procesar datos hasta la hora actual
       if (hour <= currentHour) {
-        hourlyData[hour] += item.potencia_calc;
-        hourlyCount[hour]++;
+        hourlyData[hour] += item.energia_acumulada_calc;
       }
     });
 
-    // Calcular promedio por hora (sin interpolación para día)
+    // Usar datos acumulados sin promediar
     const currentData = hourlyData.map((sum, index) => 
-      index <= currentHour ? (hourlyCount[index] > 0 ? sum / hourlyCount[index] : 0) : 0
+      index <= currentHour ? sum : 0
     );
 
     // Generar labels de horas
@@ -110,14 +111,14 @@ export class DataProcessingService {
       
       // Solo procesar datos hasta el día actual
       if (day >= 0 && day < currentDay) {
-        dailyData[day] += item.potencia_calc;
+        dailyData[day] += item.energia_acumulada_calc;
         dailyCount[day]++;
       }
     });
 
-    // Calcular promedio por día
+    // Usar la suma diaria en lugar del promedio
     const rawData = dailyData.map((sum, index) => 
-      index < currentDay ? (dailyCount[index] > 0 ? sum / dailyCount[index] : null) : 0
+      index < currentDay ? (dailyCount[index] > 0 ? sum : null) : 0
     );
 
     // Completar espacios vacíos con interpolación solo hasta el día actual
@@ -155,23 +156,24 @@ export class DataProcessingService {
     
     // Crear array de 12 meses inicializado en 0
     const monthlyData = new Array(12).fill(0);
-    const monthlyCount = new Array(12).fill(0);
+
+    // Filtrar datos futuros primero
+    const filteredData = data.filter(item => new Date(item.fecha_creacion) <= today);
 
     // Agrupar datos por mes
-    data.forEach(item => {
+    filteredData.forEach(item => {
       const fecha = new Date(item.fecha_creacion);
       const month = fecha.getMonth(); // 0-indexado
       
       // Solo procesar datos hasta el mes actual
       if (month <= currentMonth) {
-        monthlyData[month] += item.potencia_calc;
-        monthlyCount[month]++;
+        monthlyData[month] += item.energia_acumulada_calc;
       }
     });
 
-    // Calcular promedio por mes (sin interpolación para año)
+    // Usar datos acumulados sin promediar
     const currentData = monthlyData.map((sum, index) => 
-      index <= currentMonth ? (monthlyCount[index] > 0 ? sum / monthlyCount[index] : 0) : 0
+      index <= currentMonth ? sum : 0
     );
 
     // Labels de meses
