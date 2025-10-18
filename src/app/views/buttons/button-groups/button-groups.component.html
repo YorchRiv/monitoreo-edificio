@@ -2,20 +2,20 @@
     <c-card class="mb-4">
       <c-card-header class="d-flex justify-content-between align-items-center">
         <div>
-          <strong>Proyeccion de Consumo</strong> <span> este dia</span>
+          <strong>Proyeccion de Consumo</strong> <span> este {{ periodo }}</span>
         </div>
         <form [formGroup]="formRadio1">
           <c-button-group aria-label="Basic radio toggle button group" role="group" >
-              <input class="btn-check" formControlName="radio1" type="radio" value="Radio1" />
-              <label (click)="setRadioValue('Radio1')" cButton cFormCheckLabel
-                     variant="outline">Dia</label>
+              <input class="btn-check" formControlName="radio1" type="radio" value="dia" />
+              <label (click)="setRadioValue('dia')" cButton cFormCheckLabel
+                     variant="outline">Día</label>
 
-              <input class="btn-check" formControlName="radio1" type="radio" value="Radio2" />
-              <label (click)="setRadioValue('Radio2')" cButton cFormCheckLabel
+              <input class="btn-check" formControlName="radio1" type="radio" value="mes" />
+              <label (click)="setRadioValue('mes')" cButton cFormCheckLabel
                      variant="outline">Mes</label>
 
-              <input class="btn-check" formControlName="radio1" type="radio" value="Radio3" />
-              <label (click)="setRadioValue('Radio3')" cButton cFormCheckLabel variant="outline">Año</label>
+              <input class="btn-check" formControlName="radio1" type="radio" value="año" />
+              <label (click)="setRadioValue('año')" cButton cFormCheckLabel variant="outline">Año</label>
             </c-button-group>
           </form>
       </c-card-header>
@@ -25,49 +25,49 @@
         <c-col xl="3" md="6" sm="6">
           <c-widget-stat-b
             #widgetStatB1inv="cWidgetStatB"
-            [title]="'Widget title'"
+            [title]="'Voltaje'"
             color="success-gradient"
             inverse
-            text="Lorem ipsum dolor sit amet enim."
-            value="89.9%"
+            text="Voltaje promedio registrado en el período"
+            [value]="voltajePromedio.toFixed(1) + ' V'"
           >
-            <c-progress [white]="widgetStatB1inv.inverse()" class="my-2" thin [value]="89.9" />
+            <c-progress [white]="widgetStatB1inv.inverse()" class="my-2" thin [value]="(voltajePromedio/240)*100" />
           </c-widget-stat-b>
         </c-col>
         <c-col xl="3" md="6" sm="6">
           <c-widget-stat-b
             #widgetStatB2inv="cWidgetStatB"
-            [title]="'Widget title'"
+            [title]="'Amperaje'"
             color="info-gradient"
             inverse
-            text="Lorem ipsum dolor sit amet enim."
-            value="12.124"
+            text="Corriente promedio registrada en el período"
+            [value]="corrientePromedio.toFixed(1) + ' A'"
           >
-            <c-progress [white]="widgetStatB2inv.inverse()" class="my-2" thin [value]="89.9" />
+            <c-progress [white]="widgetStatB2inv.inverse()" class="my-2" thin [value]="(corrientePromedio/200)*100" />
           </c-widget-stat-b>
         </c-col>
         <c-col xl="3" md="6" sm="6">
           <c-widget-stat-b
             #widgetStatB3inv="cWidgetStatB"
-            [title]="'Widget title'"
+            [title]="'Consumo Estimado GTQ'"
             color="warning-gradient"
             inverse
-            text="Lorem ipsum dolor sit amet enim."
-            value="$98,111.00"
+            text="Proyección del costo total del período"
+            [value]="'Q ' + consumoEstimadoGTQ.toFixed(2)"
           >
-            <c-progress [white]="widgetStatB3inv.inverse()" class="my-2" thin [value]="89.9" />
+            <c-progress [white]="widgetStatB3inv.inverse()" class="my-2" thin [value]="(consumoEstimadoGTQ/15000)*100" />
           </c-widget-stat-b>
         </c-col>
         <c-col xl="3" md="6" sm="6">
           <c-widget-stat-b
             #widgetStatB4inv="cWidgetStatB"
-            [title]="'Widget title'"
+            [title]="'Consumo Estimado KWH'"
             color="primary-gradient"
             inverse
-            text="Lorem ipsum dolor sit amet enim."
-            value="2 TB"
+            text="Proyección del consumo total del período"
+            [value]="consumoEstimadoKWH.toFixed(2) + ' kWh'"
           >
-            <c-progress [white]="widgetStatB4inv.inverse()" class="my-2" thin [value]="89.9" />
+            <c-progress [white]="widgetStatB4inv.inverse()" class="my-2" thin [value]="(consumoEstimadoKWH/10000)*100" />
           </c-widget-stat-b>
         </c-col>
       </c-row>
@@ -114,7 +114,7 @@
   <c-col xs="12">
     <c-card>
       <c-card-header>
-        <span>Proyeccion de Consumo <strong>Este Dia</strong></span>
+        <span>Proyeccion de Consumo <strong>Este {{ periodo }}</strong></span>
         <div class="d-print-none float-end">
           <button (click)="print($event)" cButton class="me-1" color="secondary" size="sm">
             <svg cIcon name="cilPrint" size="sm"></svg>
@@ -175,15 +175,15 @@
               <td class="text-center">1</td>
               <td class="text-start">Consumo total (kWh)</td>
               <td class="text-start">Energía registrada en el período</td>
-              <td class="text-center">8 497</td>
-              <td class="text-end">9 100</td>
+              <td class="text-center">{{ consumoEstimadoKWH.toFixed(0) }}</td>
+              <td class="text-end">{{ (consumoEstimadoKWH * calcularFactorProyeccion(periodo)).toFixed(0) }}</td>
               <td class="text-end">kWh (proyectado)</td>
             </tr>
             <tr>
               <td class="text-center">2</td>
               <td class="text-start">Voltaje promedio (V)</td>
               <td class="text-start">Promedio de tensión registrada</td>
-              <td class="text-center">230.5</td>
+              <td class="text-center">{{ voltajePromedio.toFixed(1) }}</td>
               <td class="text-end">—</td>
               <td class="text-end">V</td>
             </tr>
@@ -191,7 +191,7 @@
               <td class="text-center">3</td>
               <td class="text-start">Corriente promedio (A)</td>
               <td class="text-start">Corriente media por fase</td>
-              <td class="text-center">118.3</td>
+              <td class="text-center">{{ corrientePromedio.toFixed(1) }}</td>
               <td class="text-end">—</td>
               <td class="text-end">A</td>
             </tr>
@@ -199,7 +199,7 @@
               <td class="text-center">4</td>
               <td class="text-start">Potencia promedio (kW)</td>
               <td class="text-start">Potencia activa media</td>
-              <td class="text-center">24.8</td>
+              <td class="text-center">{{ (voltajePromedio * corrientePromedio / 1000).toFixed(1) }}</td>
               <td class="text-end">—</td>
               <td class="text-end">kW</td>
             </tr>
@@ -207,7 +207,7 @@
               <td class="text-center">5</td>
               <td class="text-start">Costo unitario (Q/kWh)</td>
               <td class="text-start">Tarifa aplicada</td>
-              <td class="text-center">1.51</td>
+              <td class="text-center">{{ tarifaActual.toFixed(2) }}</td>
               <td class="text-end">—</td>
               <td class="text-end">Q/kWh</td>
             </tr>
@@ -216,7 +216,7 @@
               <td class="text-start">Costo total estimado</td>
               <td class="text-start">Basado en consumo proyectado</td>
               <td class="text-center">—</td>
-              <td class="text-end">13 741.00</td>
+              <td class="text-end">{{ consumoEstimadoGTQ.toFixed(2) }}</td>
               <td class="text-end">Q</td>
             </tr>
           </tbody>
