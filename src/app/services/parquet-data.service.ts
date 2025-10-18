@@ -69,8 +69,12 @@ export class ParquetDataService {
    */
   getDayFilter(): ParquetFilterRequest {
     const today = new Date();
-    const fechaInicio = today.toISOString().split('T')[0]; // YYYY-MM-DD
-    const fechaFin = `${fechaInicio} 23:59:59`;
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    
+    const fechaInicio = `${year}-${month}-${day} 00:00:00`;
+    const fechaFin = `${year}-${month}-${day} 23:59:59`;
 
     return {
       limit: 5000,
