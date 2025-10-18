@@ -77,7 +77,17 @@ export class ButtonGroupsComponent implements OnInit {
   corrientePromedio: number = 0;
   consumoEstimadoKWH: number = 0;
   consumoEstimadoGTQ: number = 0;
-  tarifaActual: number = 1.51; // Q/kWh
+  
+  // Obtener tarifa desde la configuración
+  public get tarifaActual(): number {
+    const parametros = localStorage.getItem('parametrosMonitoreo');
+    if (parametros) {
+      const valores = JSON.parse(parametros);
+      return valores.valorKwh;
+    }
+    return 1.51; // Valor por defecto si no hay configuración
+  }
+  
   periodo: string = 'dia';   // Período actual seleccionado
 
   ngOnInit() {

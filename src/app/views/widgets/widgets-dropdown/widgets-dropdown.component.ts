@@ -34,7 +34,14 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit, OnCha
   @Input() previousApiData: MedicionData[] = [];
 
   // Factor de conversión para calcular el costo en GTQ por kWh
-  private readonly conversionRate: number = 1.51;
+  private get conversionRate(): number {
+    const parametros = localStorage.getItem('parametrosMonitoreo');
+    if (parametros) {
+      const valores = JSON.parse(parametros);
+      return valores.valorKwh;
+    }
+    return 1.51; // Valor por defecto si no hay configuración
+  }
 
   data: any[] = [];
   options: any[] = [];

@@ -44,8 +44,15 @@ import { catchError, of } from 'rxjs';
 })
 export class ChartsComponent implements OnInit {
 
-  // Constante del precio por kWh
-  public readonly PRECIO_KWH = 1.51;
+  // Precio por kWh obtenido de la configuración
+  private get PRECIO_KWH(): number {
+    const parametros = localStorage.getItem('parametrosMonitoreo');
+    if (parametros) {
+      const valores = JSON.parse(parametros);
+      return valores.valorKwh;
+    }
+    return 1.51; // Valor por defecto si no hay configuración
+  }
 
   // Datos para la tabla
   public currentApiData: MedicionData[] = [];

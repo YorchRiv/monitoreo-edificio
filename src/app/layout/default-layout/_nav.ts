@@ -6,11 +6,11 @@ export const navItems: INavData[] = [
     url: '/dashboard',
     iconComponent: { name: 'cil-speedometer' }    
   },
-    {
+    /*{
     name: 'Dashboard 2',
     iconComponent: { name: 'cil-chart' },
     url: '/plugins/charts2'
-  },
+  },*/
   {
     name: 'Historial de Consumo',
     iconComponent: { name: 'cil-chart' },
@@ -20,6 +20,11 @@ export const navItems: INavData[] = [
     name: 'Proyecciones',
     iconComponent: { name: 'cil-chart-pie' },
     url: '/buttons/button-groups'
+  },
+  {
+    name: 'Parametros',
+    iconComponent: { name: 'cil-settings' },
+    url: '/forms/input-group'
   },
   {
     title: true,

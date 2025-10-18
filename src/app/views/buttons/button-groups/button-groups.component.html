@@ -52,7 +52,7 @@
             [title]="'Consumo Estimado GTQ'"
             color="warning-gradient"
             inverse
-            text="Proyección del costo total del período"
+            text="Proyección del costo total para este período"
             [value]="'Q ' + formatearNumero(consumoEstimadoGTQ)"
           >
             <c-progress [white]="widgetStatB3inv.inverse()" class="my-2" thin [value]="(consumoEstimadoGTQ/15000)*100" />
@@ -115,7 +115,7 @@
     <c-card>
       <c-card-header>
         <span>Proyeccion de Consumo <strong>Este {{ periodo }}</strong></span>
-        <div class="d-print-none float-end">
+        <!--div class="d-print-none float-end">
           <button (click)="print($event)" cButton class="me-1" color="secondary" size="sm">
             <svg cIcon name="cilPrint" size="sm"></svg>
             <span class="d-none d-sm-inline-flex">Print</span>
@@ -124,7 +124,7 @@
             <svg cIcon name="cilSave" size="sm"></svg>
             <span class="d-none d-sm-inline-flex">Save</span>
           </button>
-        </div>
+        </div>-->
       </c-card-header>
       <c-card-body>
         <c-row class="mb-4">
@@ -251,17 +251,18 @@
                 </tr>
               </tbody>
             </table>
-            <button cButton class="d-print-none" color="success">
+            <!--button cButton class="d-print-none" color="success">
               <svg cIcon name="cilDollar"></svg>
               Proceed to Payment
-            </button>
+            </button>-->
           </c-col>
         </c-row>
       </c-card-body>
     </c-card>
   </c-col>
 </c-row>
-
+<div class="mb-4"></div>
+<!--
 <c-row ngPreserveWhitespaces>
   <c-col xs="12">
     <app-docs-components href="components/button-group" title="Button Group" />
@@ -656,4 +657,4 @@
       </c-card-body>
     </c-card>
   </c-col>
-</c-row>
+</c-row>-->

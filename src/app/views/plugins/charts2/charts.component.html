@@ -39,13 +39,23 @@
 
 <!-- Gráficas Chart.js - Parte Inferior -->
 <c-row>
-  <c-col xs="6" lg="12">
+  <c-col xs="12" lg="6">
     <c-card class="mb-4">
       <c-card-header>
         Line Chart
       </c-card-header>
       <c-card-body>
         <c-chart type="line" [data]="chartLineData" [options]="options" />
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12" lg="6">
+    <c-card class="mb-4">
+      <c-card-header>
+        Polar Area Chart
+      </c-card-header>
+      <c-card-body>
+        <c-chart type="polarArea" [data]="chartPolarAreaData" [options]="options" />
       </c-card-body>
     </c-card>
   </c-col>
@@ -257,7 +267,7 @@
   </c-col>
 </c-row>
 
-<!-- Gráficas Chart.js - Parte Inferior -->
+<!-- Gráficas Chart.js - Parte Inferior ->
 <c-row>
   <c-col xs="12" lg="4">
     <c-card class="mb-4">
@@ -299,4 +309,4 @@
       </c-card-body>
     </c-card>
   </c-col>
-</c-row>
+</c-row>-->

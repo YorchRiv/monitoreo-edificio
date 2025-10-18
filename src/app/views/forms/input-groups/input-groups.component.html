@@ -1,25 +1,61 @@
 <c-row>
-  <c-col xs="12">
-    <app-docs-components href="forms/input-group" title="Input Group" />
+  <c-col xs="12">  
     <c-card class="mb-4">
       <c-card-header ngPreserveWhitespaces>
-        <strong>Angular Input group</strong> <small>Basic example</small>
+        <strong>Configuracion de Parametros</strong>
       </c-card-header>
       <c-card-body>
         <p class="text-body-secondary small">
-          Place one add-on or button on either side of an input. You may also place one on both
-          sides of an input. Remember to place <code>&lt;label&gt;</code>s outside the
-          input group.
+          Utilice este modulo para configurar los parametros del sistema de monitoreo.
         </p>
-        <app-docs-example href="forms/input-group">
+        <form [formGroup]="parametrosForm">
+          <label>Valor KWH (GTQ)</label>
           <c-input-group class="mb-3">
-            <span cInputGroupText id="basic-addon1">&#64;</span>
+            <span cInputGroupText id="basic-addon1">GTQ</span>
             <input aria-describedby="basic-addon1"
-                   aria-label="Username"
+                   aria-label="valor-kwh"
                    cFormControl
-                   placeholder="Username"
+                   formControlName="valorKwh"
+                   placeholder="Valor KWH"
+                   type="number"
+                   step="0.01"
             />
           </c-input-group>
+          <label>Limite Mensual KWH</label>
+          <c-input-group class="mb-3">
+            <span cInputGroupText id="basic-addon1">KWH</span>
+            <input aria-describedby="basic-addon1"
+                   aria-label="limite-mensual"
+                   cFormControl
+                   formControlName="limiteMensualKwh"
+                   placeholder="Limite Mensual KWH"
+                   type="number"
+            />
+          </c-input-group>
+          <p class="text-body-secondary small">Limite Diario: {{ limiteDiario | number:'1.0-2' }} KWH</p>
+          <p class="text-body-secondary small">Limite Mensual: {{ limiteMensual | number:'1.0-2' }} KWH</p>
+          <p class="text-body-secondary small">Limite Anual: {{ limiteAnual | number:'1.0-2' }} KWH</p>
+          <label cLabel for="multiple-inputs">Rangos de Voltaje</label>
+          <c-input-group>
+            <span cInputGroupText>Voltaje Minimo y Maximo</span>
+            <input aria-label="Voltaje Minimo" 
+                   placeholder="Voltaje Minimo" 
+                   cFormControl
+                   formControlName="voltajeMinimo"
+                   type="number"/>
+            <input aria-label="Voltaje Maximo" 
+                   placeholder="Voltaje Maximo" 
+                   cFormControl
+                   formControlName="voltajeMaximo"
+                   type="number"/>
+          </c-input-group>
+          <div class="mb-4"></div>
+          <div class="d-grid gap-2 col-6 mx-auto">
+            <button cButton color="primary" (click)="guardarCambios()">Guardar Cambios</button>
+            <button cButton color="secondary" (click)="restablecerValores()">Restablecer</button>
+          </div>
+        </form>
+          <!--div class="mb-4"></div>
           <c-input-group class="mb-3">
             <input aria-describedby="basic-addon2"
                    aria-label="Recipient&#39;s username"
@@ -47,11 +83,11 @@
             <span cInputGroupText>With textarea</span>
             <textarea aria-label="With textarea" cFormControl></textarea>
           </c-input-group>
-        </app-docs-example>
+        -->
       </c-card-body>
     </c-card>
   </c-col>
-  <c-col xs="12">
+  <!--c-col xs="12">
     <c-card class="mb-4">
       <c-card-header ngPreserveWhitespaces>
         <strong>Angular Input group</strong> <small>Wrapping</small>
@@ -74,7 +110,7 @@
         </app-docs-example>
       </c-card-body>
     </c-card>
-  </c-col>
+  </-c-col>
   <c-col xs="12">
     <c-card class="mb-4">
       <c-card-header ngPreserveWhitespaces>
@@ -519,5 +555,5 @@
         </app-docs-example>
       </c-card-body>
     </c-card>
-  </c-col>
+  </c-col>-->
 </c-row>
