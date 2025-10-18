@@ -43,22 +43,28 @@ export class DataProcessingService {
    * Procesa datos para vista diaria (agrupados por hora)
    */
   private processDayData(data: MedicionData[]): ProcessedChartData {
+    const now = new Date();
+    const currentHour = now.getHours();
+    
     // Crear array de 24 horas inicializado en 0
     const hourlyData = new Array(24).fill(0);
     const hourlyCount = new Array(24).fill(0);
 
-    // Agrupar datos por hora
+    // Agrupar datos por hora, ignorando datos futuros
     data.forEach(item => {
       const fecha = new Date(item.fecha_creacion);
       const hour = fecha.getHours();
       
-      hourlyData[hour] += item.potencia_calc;
-      hourlyCount[hour]++;
+      // Solo procesar datos hasta la hora actual
+      if (hour <= currentHour) {
+        hourlyData[hour] += item.potencia_calc;
+        hourlyCount[hour]++;
+      }
     });
 
     // Calcular promedio por hora (sin interpolación para día)
     const currentData = hourlyData.map((sum, index) => 
-      hourlyCount[index] > 0 ? sum / hourlyCount[index] : 0
+      index <= currentHour ? (hourlyCount[index] > 0 ? sum / hourlyCount[index] : 0) : 0
     );
 
     // Generar labels de horas
@@ -66,11 +72,14 @@ export class DataProcessingService {
       `${i.toString().padStart(2, '0')}:00`
     );
 
-    // Calcular proyección y BEP
-    const projectionData = this.calculateProjection(currentData, 24);
-    const bepData = this.calculateBEP(currentData);
+    // Calcular proyección y BEP solo con datos hasta la hora actual
+    const validData = currentData.slice(0, currentHour + 1);
+    const projectionData = [...this.calculateProjection(validData, currentHour + 1), 
+                          ...new Array(24 - (currentHour + 1)).fill(0)];
+    const bepData = this.calculateBEP(validData);
 
-    const totalConsumption = currentData.reduce((sum: number, val: number) => sum + val, 0);
+    const totalConsumption = currentData.slice(0, currentHour + 1)
+                                     .reduce((sum, val) => sum + val, 0);
 
     return {
       labels,
@@ -87,6 +96,7 @@ export class DataProcessingService {
   private processMonthData(data: MedicionData[]): ProcessedChartData {
     // Obtener el número de días del mes actual
     const today = new Date();
+    const currentDay = today.getDate();
     const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
     
     // Crear array de días inicializado en 0
@@ -98,7 +108,8 @@ export class DataProcessingService {
       const fecha = new Date(item.fecha_creacion);
       const day = fecha.getDate() - 1; // Array es 0-indexado
       
-      if (day >= 0 && day < daysInMonth) {
+      // Solo procesar datos hasta el día actual
+      if (day >= 0 && day < currentDay) {
         dailyData[day] += item.potencia_calc;
         dailyCount[day]++;
       }
@@ -106,11 +117,12 @@ export class DataProcessingService {
 
     // Calcular promedio por día
     const rawData = dailyData.map((sum, index) => 
-      dailyCount[index] > 0 ? sum / dailyCount[index] : null
+      index < currentDay ? (dailyCount[index] > 0 ? sum / dailyCount[index] : null) : 0
     );
 
-    // Completar espacios vacíos con interpolación
-    const currentData = this.fillGapsWithInterpolation(rawData);
+    // Completar espacios vacíos con interpolación solo hasta el día actual
+    const currentDataWithGaps = this.fillGapsWithInterpolation(rawData.slice(0, currentDay));
+    const currentData = [...currentDataWithGaps, ...new Array(daysInMonth - currentDay).fill(0)];
 
     // Generar labels de días
     const month = today.getMonth() + 1;
@@ -138,6 +150,9 @@ export class DataProcessingService {
    * Procesa datos para vista anual (agrupados por mes)
    */
   private processYearData(data: MedicionData[]): ProcessedChartData {
+    const today = new Date();
+    const currentMonth = today.getMonth(); // 0-indexado
+    
     // Crear array de 12 meses inicializado en 0
     const monthlyData = new Array(12).fill(0);
     const monthlyCount = new Array(12).fill(0);
@@ -147,13 +162,16 @@ export class DataProcessingService {
       const fecha = new Date(item.fecha_creacion);
       const month = fecha.getMonth(); // 0-indexado
       
-      monthlyData[month] += item.potencia_calc;
-      monthlyCount[month]++;
+      // Solo procesar datos hasta el mes actual
+      if (month <= currentMonth) {
+        monthlyData[month] += item.potencia_calc;
+        monthlyCount[month]++;
+      }
     });
 
     // Calcular promedio por mes (sin interpolación para año)
     const currentData = monthlyData.map((sum, index) => 
-      monthlyCount[index] > 0 ? sum / monthlyCount[index] : 0
+      index <= currentMonth ? (monthlyCount[index] > 0 ? sum / monthlyCount[index] : 0) : 0
     );
 
     // Labels de meses
