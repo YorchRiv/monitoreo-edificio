@@ -15,7 +15,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --aot=true",
-    "zip": "git archive -o $npm_package_name-$npm_package_config_theme-v$npm_package_version.zip -9 HEAD"
+    "zip": "git archive -o $npm_package_name-$npm_package_config_theme-v$npm_package_version.zip -9 HEAD",
+    "deploy": "ng build --prod --output-path docs --base-href /monitoreo-edificio/ && npx angular-cli-ghpages --dir=docs"
   },
   "private": true,
   "dependencies": {
