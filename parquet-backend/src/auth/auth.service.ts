@@ -37,32 +37,54 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto) {
-    const user = await this.prisma.user.findUnique({
-      where: { email: loginDto.email },
-    });
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { email: loginDto.email },
+      });
 
-    if (!user || !user.activo) {
-      throw new UnauthorizedException('Credenciales inválidas');
-    }
+      if (!user) {
+        throw new UnauthorizedException('El correo electrónico no está registrado');
+      }
 
-    const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
+      if (!user.activo) {
+        throw new UnauthorizedException('Tu cuenta está desactivada. Por favor, contacta al administrador');
+      }
 
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Credenciales inválidas');
-    }
+      const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
 
-    const payload = { email: user.email, sub: user.id, rol: user.rol };
-    
-    return {
-      access_token: this.jwtService.sign(payload),
-      user: {
-        id: user.id,
-        email: user.email,
-        nombre: user.nombre,
-        apellido: user.apellido,
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('La contraseña es incorrecta');
+      }
+
+      const payload = { 
+        email: user.email, 
+        sub: user.id, 
         rol: user.rol,
-      },
-    };
+        nombre: user.nombre,
+        apellido: user.apellido
+      };
+      
+      const token = this.jwtService.sign(payload, {
+        expiresIn: '24h' // El token expira en 24 horas
+      });
+
+      return {
+        access_token: token,
+        user: {
+          id: user.id,
+          email: user.email,
+          nombre: user.nombre,
+          apellido: user.apellido,
+          rol: user.rol,
+        },
+        message: 'Inicio de sesión exitoso'
+      };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+      throw new UnauthorizedException('Error en el inicio de sesión. Por favor, intenta nuevamente');
+    }
   }
 
   async validateUser(userId: string) {

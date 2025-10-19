@@ -15,25 +15,25 @@
       <c-nav-item>
         <a cNavLink routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
       </c-nav-item>
-      <c-nav-item>
+      <!--c-nav-item>
         <a cNavLink routerLink="/users" routerLinkActive="active">Users</a>
       </c-nav-item>
       <c-nav-item>
         <a cNavLink routerLink="/settings" routerLinkActive="active">Settings</a>
-      </c-nav-item>
+      </c-nav-item-->
     </c-header-nav>
 
     <c-header-nav class="d-none d-md-flex ms-auto ">
-      <ng-container *ngTemplateOutlet="notifyDropdown" />
+      <!--ng-container *ngTemplateOutlet="notifyDropdown" />
       <ng-container *ngTemplateOutlet="taskDropdown" />
-      <ng-container *ngTemplateOutlet="messagesDropdown" />
+      <ng-container *ngTemplateOutlet="messagesDropdown" /-->
     </c-header-nav>
 
     <c-header-nav class="ms-auto ms-md-0">
       <div class="nav-item py-1">
         <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
       </div>
-      <ng-container *ngTemplateOutlet="languageDropdown" />
+      
       <ng-container *ngTemplateOutlet="themeDropdown" />
       <div class="nav-item py-1">
         <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
@@ -41,18 +41,18 @@
     </c-header-nav>
 
     <c-header-nav class="ms-0">
-      <ng-container *ngTemplateOutlet="userDropdown" />
+      <!--ng-container *ngTemplateOutlet="userDropdown" /-->
     </c-header-nav>
 
     <!--aside toggler-->
-    <button
+    <!--button
       cHeaderToggler
       cSidebarToggle="aside1"
       style="margin-inline-end: -12px"
       toggle="visible"
     >
       <svg cIcon name="cilApplicationsSettings" size="lg"></svg>
-    </button>
+    </button-->
   </c-container>
   <c-container [fluid]="true" class="px-4">
     <c-breadcrumb-router />

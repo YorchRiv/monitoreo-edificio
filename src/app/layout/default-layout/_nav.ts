@@ -27,6 +27,11 @@ export const navItems: INavData[] = [
     url: '/forms/input-group'
   },
   {
+    name: 'Login',
+    iconComponent: { name: 'cil-settings' },
+    url: '/login'
+  }/*,
+  {
     title: true,
     name: 'Theme'
   },
@@ -483,5 +488,5 @@ export const navItems: INavData[] = [
     url: 'https://coreui.io/angular/docs/',
     iconComponent: { name: 'cil-description' },
     attributes: { target: '_blank' }
-  }
+  }*/
 ];

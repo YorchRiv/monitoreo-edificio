@@ -1,6 +1,7 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './interceptors/auth.interceptor';
 import {
   provideRouter,
   withEnabledBlockingInitialNavigation,
@@ -31,6 +32,6 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(SidebarModule, DropdownModule),
     IconSetService,
     provideAnimationsAsync(),
-    provideHttpClient()
+    provideHttpClient(withInterceptors([authInterceptor]))
   ]
 };
