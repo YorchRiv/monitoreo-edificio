@@ -14,17 +14,17 @@ export const navItems: INavData[] = [
   {
     name: 'Historial de Consumo',
     iconComponent: { name: 'cil-chart' },
-    url: '/plugins/charts'
+    url: '/historialconsumo'
   },
   {
     name: 'Proyecciones',
     iconComponent: { name: 'cil-chart-pie' },
-    url: '/buttons/button-groups'
+    url: '/proyecciones'
   },
   {
-    name: 'Parametros',
+    name: 'Parámetros',
     iconComponent: { name: 'cil-settings' },
-    url: '/forms/input-group'
+    url: '/parametros'
   }/*,
   /*{
     name: 'Login',

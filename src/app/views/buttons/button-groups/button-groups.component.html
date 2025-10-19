@@ -10,7 +10,7 @@
               <label (click)="setRadioValue('dia')" cButton cFormCheckLabel
                      variant="outline">Día</label>
 
-              <input class="btn-check" formControlName="radio1" type="radio" value="mes" />
+              <input class="btn-check" formControlName="radio1" type="radio" value="mes" checked />
               <label (click)="setRadioValue('mes')" cButton cFormCheckLabel
                      variant="outline">Mes</label>
 
@@ -154,9 +154,7 @@
               Fecha Reporte <strong>{{ obtenerFechaActual() }}</strong>
             </div>
             <div>Tipo de Analisis: {{ obtenerTipoAnalisis() }}</div>
-            <div>Umbral de Referencia: {{ obtenerUmbralReferencia() }}</div>
-            <div [ngStyle]="{'color': estaEnLimites() ? 'green' : 'red'}">
-              Estado: {{ estaEnLimites() ? 'Dentro de Limites' : 'Sobreconsumo' }}</div>
+            <div>Umbral de Referencia: {{ obtenerUmbralReferencia() }}</div>          
             
           </c-col>
         </c-row>
@@ -223,11 +221,14 @@
           </tbody>
         </table>
         <c-row>
+          <div [ngStyle]="{'color': estaEnLimites() ? 'green' : 'red', 'font-weight': 'bold'}">
+              {{ obtenerMensajeEstado() }}</div>
+          <div class="mb-3"></div>
           <c-col lg="4" sm="5">
             La proyección se calcula en base al promedio móvil de los últimos 6 meses de consumo, ajustado por tendencia estacional.
           </c-col>
           <c-col class="ms-auto" lg="4" sm="5">
-            <table [hover]="true" [responsive]="true" cTable color="success">
+            <table [hover]="true" [responsive]="true" cTable [color]="estaEnLimites() ? 'success' : 'danger'">
               <tbody>
                 <tr>
                   <td class="text-start">

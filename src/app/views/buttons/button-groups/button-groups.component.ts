@@ -66,7 +66,11 @@ import { ParquetDataService, MedicionData } from '../../../services/parquet-data
     TableDirective, 
     TextColorDirective
   ],
-  providers: [IconSetService, ParquetDataService]
+  providers: [IconSetService, ParquetDataService],
+  host: {
+    'class': 'app-body',
+    '[class.flex-row]': 'true'
+  }
 })
 export class ButtonGroupsComponent implements OnInit {
   private formBuilder = inject(UntypedFormBuilder);
@@ -88,60 +92,84 @@ export class ButtonGroupsComponent implements OnInit {
     return 1.51; // Valor por defecto si no hay configuración
   }
   
-  periodo: string = 'dia';   // Período actual seleccionado
+  periodo: string = 'mes';   // Período actual seleccionado por defecto
 
   ngOnInit() {
-    this.loadData('dia');
+    this.resetearGraficos(); // Inicializar gráficos con valores por defecto
+    this.loadData('mes');    // Cargar datos iniciales con período mensual
   }
 
   async loadData(periodo: string) {
-    let filter;
-    switch(periodo) {
-      case 'dia':
-        filter = this.parquetService.getDayFilter();
-        break;
-      case 'mes':
-        filter = this.parquetService.getMonthFilter();
-        break;
-      case 'año':
-        filter = this.parquetService.getYearFilter();
-        break;
-      default:
-        filter = this.parquetService.getDayFilter();
-    }
-
-    // Reiniciar valores antes de cargar nuevos datos
-    this.resetearValores();
-
-    // Obtener datos filtrados
-    this.parquetService.getFilteredData(filter).subscribe({
-      next: (response) => {
-        if (response.success && response.data.length > 0) {
-          // Calcular promedios
-          this.voltajePromedio = this.calcularPromedio(response.data, 'voltaje');
-          this.corrientePromedio = this.calcularPromedio(response.data, 'corriente');
-          
-          // Calcular estimaciones
-          const consumoActual = response.data.reduce((sum, item) => sum + item.energia_acumulada_calc, 0);
-          const factorProyeccion = this.calcularFactorProyeccion(periodo);
-          this.consumoEstimadoKWH = consumoActual * factorProyeccion;
-          this.consumoEstimadoGTQ = this.consumoEstimadoKWH * this.tarifaActual;
-
-          // Actualizar datos del gráfico
-          this.actualizarGraficos(response.data, periodo);
-        } else {
-          // Si no hay datos, mantenemos los valores reiniciados
-          console.log('No hay datos disponibles para el período seleccionado');
-          this.resetearGraficos();
-        }
-      },
-      error: (error) => {
-        console.error('Error al cargar datos:', error);
-        // En caso de error, también reiniciamos los valores
-        this.resetearValores();
-        this.resetearGraficos();
+    try {
+      let filter;
+      switch(periodo) {
+        case 'dia':
+          filter = this.parquetService.getDayFilter();
+          break;
+        case 'mes':
+          filter = this.parquetService.getMonthFilter();
+          break;
+        case 'año':
+          filter = this.parquetService.getYearFilter();
+          break;
+        default:
+          filter = this.parquetService.getDayFilter();
       }
-    });
+
+      // Reiniciar valores antes de cargar nuevos datos
+      this.resetearValores();
+
+      // Obtener datos filtrados
+      this.parquetService.getFilteredData(filter).subscribe({
+        next: (response) => {
+          if (response.success && response.data.length > 0) {
+            // Asegurarse de que los datos sean válidos
+            const datosValidos = response.data.filter(item => 
+              typeof item.voltaje === 'number' && 
+              typeof item.corriente === 'number' && 
+              typeof item.energia_acumulada_calc === 'number'
+            );
+
+            if (datosValidos.length > 0) {
+              // Calcular promedios
+              this.voltajePromedio = this.calcularPromedio(datosValidos, 'voltaje');
+              this.corrientePromedio = this.calcularPromedio(datosValidos, 'corriente');
+              
+              // Calcular estimaciones
+              const consumoActual = datosValidos.reduce((sum, item) => sum + item.energia_acumulada_calc, 0);
+              const factorProyeccion = this.calcularFactorProyeccion(periodo);
+              this.consumoEstimadoKWH = consumoActual * factorProyeccion;
+              this.consumoEstimadoGTQ = this.consumoEstimadoKWH * this.tarifaActual;
+
+              // Actualizar datos del gráfico
+              this.actualizarGraficos(datosValidos, periodo);
+            } else {
+              console.warn('Los datos recibidos no son válidos');
+              this.resetearGraficos();
+            }
+          } else {
+            console.log('No hay datos disponibles para el período seleccionado');
+            this.resetearGraficos();
+          }
+        },
+        error: (error) => {
+          console.error('Error al cargar datos:', error);
+          // En caso de error, también reiniciamos los valores
+          this.resetearValores();
+          this.resetearGraficos();
+        },
+        complete: () => {
+          // Forzar detección de cambios si es necesario
+          setTimeout(() => {
+            // Los gráficos deberían actualizarse aquí
+          }, 0);
+        }
+      });
+    } catch (error) {
+      console.error('Error en loadData:', error);
+      this.resetearValores();
+      this.resetearGraficos();
+    }
   }
 
   print($event: MouseEvent) {
@@ -236,7 +264,7 @@ export class ButtonGroupsComponent implements OnInit {
     checkbox3: false
   });
   formRadio1 = new UntypedFormGroup({
-    radio1: new UntypedFormControl('dia')
+    radio1: new UntypedFormControl('mes')
   });
 
   setCheckBoxValue(controlName: string) {
@@ -335,26 +363,62 @@ export class ButtonGroupsComponent implements OnInit {
   }
 
   obtenerUmbralReferencia(): string {
-    switch(this.periodo) {
-      case 'dia':
-        return this.formatearNumero(333.33) + ' KWH diarios';
-      case 'mes':
-        return this.formatearNumero(10000) + ' KWH mensuales';
-      case 'año':
-        return this.formatearNumero(120000) + ' KWH anuales';
-      default:
-        return this.formatearNumero(10000) + ' KWH mensuales';
+    const parametros = localStorage.getItem('parametrosMonitoreo');
+    let umbrales = {
+      dia: 333.33,
+      mes: 15000, // Valor por defecto alineado con el módulo de parámetros
+      año: 120000
+    };
+    
+    if (parametros) {
+      const valores = JSON.parse(parametros);
+      // Obtenemos el valor mensual directamente del campo limiteMensualKwh
+      const mensual = parseFloat(valores.limiteMensualKwh);
+      if (!isNaN(mensual)) {
+        umbrales.mes = mensual;
+        umbrales.dia = mensual / 30; // Aproximación diaria
+        umbrales.año = mensual * 12; // Proyección anual
+      }
     }
+
+    const umbralActual = umbrales[this.periodo as keyof typeof umbrales];
+    return `${this.formatearNumero(umbralActual)} KWH ${this.periodo === 'año' ? 'anuales' : 
+           this.periodo === 'mes' ? 'mensuales' : 'diarios'}`;
   }
 
   estaEnLimites(): boolean {
-    const umbral = {
-      dia: 333.33,    // 10,000 KWH / 30 días
-      mes: 10000,     // 10,000 KWH
-      año: 120000     // 10,000 KWH * 12 meses
+    const parametros = localStorage.getItem('parametrosMonitoreo');
+    let umbral = {
+      dia: 333.33,    // Valor por defecto
+      mes: 15000,     // Valor por defecto alineado con el módulo de parámetros
+      año: 120000     // Valor por defecto
     };
     
-    return this.consumoEstimadoKWH <= umbral[this.periodo as keyof typeof umbral];
+    if (parametros) {
+      const valores = JSON.parse(parametros);
+      // Obtenemos el valor mensual directamente del campo limiteMensualKwh
+      const mensual = parseFloat(valores.limiteMensualKwh);
+      if (!isNaN(mensual)) {
+        umbral.mes = mensual;
+        umbral.dia = mensual / 30; // Aproximación diaria
+        umbral.año = mensual * 12; // Proyección anual
+      }
+    }
+    
+    const consumoActual = this.consumoEstimadoKWH;
+    const umbralActual = umbral[this.periodo as keyof typeof umbral];
+    
+    return consumoActual <= umbralActual;
+  }
+
+  obtenerMensajeEstado(): string {
+    const enLimites = this.estaEnLimites();
+    const consumoActual = this.consumoEstimadoKWH;
+    const umbralReferencia = this.obtenerUmbralReferencia();
+    
+    return enLimites ? 
+      `Consumo dentro de los límites establecidos (${umbralReferencia})` : 
+      `¡Advertencia! El consumo supera el límite establecido (${umbralReferencia})`;
   }
 
   formatearNumero(valor: number): string {

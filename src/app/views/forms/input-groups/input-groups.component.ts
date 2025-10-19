@@ -92,14 +92,20 @@ export class InputGroupsComponent implements OnInit {
   }
 
   calcularLimites(limiteMensual: number) {
-    this.limiteDiario = limiteMensual / 30; // Aproximación simple de días por mes
-    this.limiteMensual = limiteMensual;
-    this.limiteAnual = limiteMensual * 12;
+    // Redondear a 2 decimales para mejor precisión
+    this.limiteDiario = parseFloat((limiteMensual / 30).toFixed(2)); // Aproximación simple de días por mes
+    this.limiteMensual = parseFloat(limiteMensual.toFixed(2));
+    this.limiteAnual = parseFloat((limiteMensual * 12).toFixed(2));
   }
 
   guardarCambios() {
     if (this.parametrosForm.valid) {
-      const valores = this.parametrosForm.value;
+      const valores = {
+        ...this.parametrosForm.value,
+        limiteConsumoDiario: this.limiteDiario,
+        limiteConsumoMensual: this.limiteMensual,
+        limiteConsumoAnual: this.limiteAnual
+      };
       try {
         localStorage.setItem('parametrosMonitoreo', JSON.stringify(valores));
         console.log('Valores guardados:', valores);
@@ -116,6 +122,14 @@ export class InputGroupsComponent implements OnInit {
   restablecerValores() {
     this.parametrosForm.patchValue(this.defaultValues);
     this.calcularLimites(this.defaultValues.limiteMensualKwh);
-    console.log('Valores restablecidos a los valores por defecto:', this.defaultValues);
+    // Guardar los valores por defecto en el localStorage
+    const valores = {
+      ...this.defaultValues,
+      limiteConsumoDiario: this.limiteDiario,
+      limiteConsumoMensual: this.limiteMensual,
+      limiteConsumoAnual: this.limiteAnual
+    };
+    localStorage.setItem('parametrosMonitoreo', JSON.stringify(valores));
+    console.log('Valores restablecidos a los valores por defecto:', valores);
   }
 }

@@ -46,6 +46,20 @@ export const routes: Routes = [
         loadChildren: () => import('./views/forms/routes').then((m) => m.routes)
       },
       {
+        path: 'parametros',
+        loadComponent: () => import('./views/forms/input-groups/input-groups.component').then(m => m.InputGroupsComponent),
+        data: {
+          title: 'Parámetros'
+        }
+      },
+      {
+        path: 'proyecciones',
+        loadComponent: () => import('./views/buttons/button-groups/button-groups.component').then(m => m.ButtonGroupsComponent),
+        data: {
+          title: 'Proyecciones'
+        }
+      },
+      {
         path: 'icons',
         loadChildren: () => import('./views/icons/routes').then((m) => m.routes)
       },
@@ -64,6 +78,10 @@ export const routes: Routes = [
       {
         path: 'plugins',
         loadChildren: () => import('./views/plugins/routes').then((m) => m.routes)
+      },
+      {
+        path: 'historialconsumo',
+        loadChildren: () => import('./views/plugins/charts/routes').then((m) => m.routes)
       },
       {
         path: 'pages',
