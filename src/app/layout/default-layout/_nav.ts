@@ -25,8 +25,8 @@ export const navItems: INavData[] = [
     name: 'Parametros',
     iconComponent: { name: 'cil-settings' },
     url: '/forms/input-group'
-  },
-  {
+  }/*,
+  /*{
     name: 'Login',
     iconComponent: { name: 'cil-settings' },
     url: '/login'

@@ -1,5 +1,7 @@
 import { NgStyle, NgTemplateOutlet } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
+import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 import {
@@ -32,6 +34,9 @@ import { IconDirective } from '@coreui/icons-angular';
 })
 export class DefaultHeaderComponent extends HeaderComponent {
 
+  public userName: string = '';
+  public userInitials: string = '';
+
   readonly #colorModeService = inject(ColorModeService);
   readonly colorMode = this.#colorModeService.colorMode;
 
@@ -46,8 +51,36 @@ export class DefaultHeaderComponent extends HeaderComponent {
     return this.colorModes.find(mode => mode.name === currentMode)?.icon ?? 'cilSun';
   });
 
-  constructor() {
+  constructor(private authService: AuthService, private router: Router) {
     super();
+    // Suscribirse al usuario logeado
+    this.authService.user$.subscribe(user => {
+      if (user && user.nombre && user.apellido) {
+        this.userName = `${user.nombre} ${user.apellido}`;
+      } else if (user && user.nombre) {
+        this.userName = user.nombre;
+      } else {
+        this.userName = '';
+      }
+      this.userInitials = this.getInitials(this.userName);
+    });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  /**
+   * Obtiene las iniciales del nombre del usuario
+   */
+  getInitials(name: string): string {
+    if (!name) return '';
+    const parts = name.trim().split(' ');
+    if (parts.length === 1) {
+      return parts[0].substring(0, 2).toUpperCase();
+    }
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   }
 
   sidebarId = input('sidebar1');

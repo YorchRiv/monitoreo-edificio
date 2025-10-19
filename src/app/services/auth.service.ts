@@ -35,33 +35,36 @@ export class AuthService {
     let errorMessage = 'Ha ocurrido un error en el servidor';
     
     if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
       errorMessage = 'Error: ' + error.error.message;
     } else {
-      // Error del lado del servidor
       if (error.status === 401) {
         errorMessage = error.error?.message || 'Credenciales inválidas';
+      } else if (error.status === 409) {
+        errorMessage = error.error?.message || 'El correo ya está registrado';
       } else if (error.status === 404) {
         errorMessage = 'El servicio no está disponible';
       } else if (error.status === 0) {
         errorMessage = 'No se puede conectar con el servidor. Por favor, verifica tu conexión.';
       }
     }
-    
     return throwError(() => errorMessage);
   }
 
   login(email: string, password: string): Observable<LoginResponse> {
-    console.log('Intentando login con:', { email, url: this.apiUrl });
-    
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
       .pipe(
         tap(response => {
-          console.log('Respuesta del servidor:', response);
           localStorage.setItem('token', response.access_token);
           localStorage.setItem('user', JSON.stringify(response.user));
           this.userSubject.next(response.user);
         }),
+        catchError(this.handleError)
+      );
+  }
+
+  register(nombre: string, apellido: string, email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register`, { nombre, apellido, email, password })
+      .pipe(
         catchError(this.handleError)
       );
   }

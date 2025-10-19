@@ -63,26 +63,19 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.loading = true;
       this.error = '';
-      
       const { email, password } = this.loginForm.value;
-      
-      console.log('Enviando solicitud de login:', { email });
-
       this.authService.login(email, password).subscribe({
         next: (response) => {
-          console.log('Login exitoso:', response);
           this.loading = false;
           this.router.navigate(['/dashboard']);
         },
         error: (errorMessage) => {
-          console.error('Error en login:', errorMessage);
           this.loading = false;
           this.error = errorMessage;
         }
       });
     } else {
       let errorMessages = [];
-      
       if (this.loginForm.get('email')?.hasError('required')) {
         errorMessages.push('El correo electrónico es obligatorio');
       }
@@ -95,9 +88,7 @@ export class LoginComponent {
       if (this.loginForm.get('password')?.hasError('minlength')) {
         errorMessages.push('La contraseña debe tener al menos 6 caracteres');
       }
-      
       this.error = errorMessages.join('. ');
-      
       Object.keys(this.loginForm.controls).forEach(key => {
         const control = this.loginForm.get(key);
         if (control?.invalid) {
@@ -105,5 +96,9 @@ export class LoginComponent {
         }
       });
     }
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
   }
 }

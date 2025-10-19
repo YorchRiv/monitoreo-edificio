@@ -75,7 +75,7 @@
                 <p>
                   ¿No tienes una cuenta? Regístrate para acceder a todas las funciones del sistema de monitoreo de edificios.
                 </p>
-                <button [active]="true" cButton class="mt-3" color="primary" routerLink="/register">
+                <button [active]="true" cButton class="mt-3" color="primary" (click)="goToRegister()">
                   ¡Regístrate ahora!
                 </button>
               </div>
