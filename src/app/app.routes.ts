@@ -67,7 +67,7 @@ export const routes: Routes = [
         path: 'notifications',
         loadChildren: () => import('./views/notifications/routes').then((m) => m.routes)
       },
-      {
+      {//
         path: 'widgets',
         loadChildren: () => import('./views/widgets/routes').then((m) => m.routes)
       },
@@ -81,7 +81,10 @@ export const routes: Routes = [
       },
       {
         path: 'historialconsumo',
-        loadChildren: () => import('./views/plugins/charts/routes').then((m) => m.routes)
+        loadChildren: () => import('./views/plugins/charts/routes').then((m) => m.routes),
+        data: {
+          title: 'Historial de Consumo'
+        }
       },
       {
         path: 'pages',
@@ -111,14 +114,14 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./views/pages/login/login.component').then(m => m.LoginComponent),
     data: {
-      title: 'Login Page'
+      title: 'Iniciar Sesión'
     }
   },
   {
     path: 'register',
     loadComponent: () => import('./views/pages/register/register.component').then(m => m.RegisterComponent),
     data: {
-      title: 'Register Page'
+      title: 'Registrarse'
     }
   },
   { path: '**', redirectTo: 'login' }

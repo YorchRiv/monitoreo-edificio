@@ -14,7 +14,7 @@ import { iconSubset } from './icons/icon-subset';
     imports: [RouterOutlet]
 })
 export class AppComponent implements OnInit {
-  title = 'CoreUI Pro Angular Admin Template';
+  title = 'Sistema de Monitoreo';
 
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
   readonly #activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -33,12 +33,22 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    // Manejo del título de la página
     this.#router.events.pipe(
-        takeUntilDestroyed(this.#destroyRef)
-      ).subscribe((evt) => {
-      if (!(evt instanceof NavigationEnd)) {
-        return;
+      filter(event => event instanceof NavigationEnd),
+      map(() => {
+        let route = this.#activatedRoute;
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route;
+      }),
+      filter(route => route.outlet === 'primary'),
+      map(route => route.snapshot.data['title']),
+      takeUntilDestroyed(this.#destroyRef)
+    ).subscribe((title) => {
+      if (title) {
+        this.#titleService.setTitle(`${title} - Sistema de Monitoreo`);
       }
     });
 
